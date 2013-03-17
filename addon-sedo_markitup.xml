@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="sedo_markitup" title="Markitup XenForo Integration" version_string="2.1" version_id="11" url="" install_callback_class="Sedo_MarkitUpIntegrator_Installer" install_callback_method="install" uninstall_callback_class="Sedo_MarkitUpIntegrator_Installer" uninstall_callback_method="uninstall">
+  <admin_navigation>
+    <navigation navigation_id="MarkItUp" parent_navigation_id="options" display_order="999" link="markitup-editor" admin_permission_id="manageMarkItUp" debug_only="0" hide_no_children="0"/>
+  </admin_navigation>
+  <admin_permissions>
+    <admin_permission admin_permission_id="manageMarkItUp" display_order="9999"/>
+  </admin_permissions>
+  <admin_style_properties>
+    <property property_name="Miu_selected_buttons_container" property_type="css"><![CDATA[{"background-color":"@primaryDarker","height":"auto","padding-bottom":"1px","padding-top":"1px","width":"100%"}]]></property>
+    <property property_name="Miu_AddNewLine" property_type="css"><![CDATA[{"background-color":"@primaryDarker","border-color":"@primaryDark","border-radius":"5px","border-style":"solid","border-width":"1px","color":"@textCtrlBackground","extra":"cursor: pointer;\ntext-align: center;","margin-all":"1px","padding-all":"5px"}]]></property>
+    <property property_name="Miu_AddNewLine_hover" property_type="css"><![CDATA[{"background-color":"@secondaryMedium","border-color":"@secondaryLight","border-radius":"5px","border-style":"solid","border-width":"1px","color":"@textCtrlBackground","extra":"cursor: pointer;"}]]></property>
+    <property property_name="Miu_CreateSeparator" property_type="css"><![CDATA[{"background-color":"@primaryDarker","border-color":"@primaryDark","border-radius":"5px","border-style":"solid","border-width":"1px","color":"@textCtrlBackground","extra":"cursor: pointer;\ntext-align: center;","margin-all":"1px","padding-all":"5px"}]]></property>
+    <property property_name="Miu_CreateSeparator_hover" property_type="css"><![CDATA[{"background-color":"@secondaryMedium","border-color":"@secondaryLight","border-radius":"5px","border-style":"solid","border-width":"1px","color":"@contentBackground","extra":"cursor: pointer;"}]]></property>
+    <property property_name="Miu_Available_List_UL" property_type="css"><![CDATA[{"background-color":"@pageBackground","border-color":"@faintTextColor","border-style":"dotted","border-width":"1px","extra":"min-height: 45px;","width":"100%"}]]></property>
+    <property property_name="Miu_Available_List_LI" property_type="css"><![CDATA[{"extra":"display: inline-table;"}]]></property>
+    <property property_name="Miu_Available_Button_Block" property_type="css"><![CDATA[{"background-color":"@faintTextColor","border-color":"@dimmedTextColor","border-style":"solid","border-width":"1px","extra":"line-height: 30px;\ntext-align: center;","height":"30px","margin-bottom":"5px","margin-left":"1px","margin-right":"1px","margin-top":"5px","width":"30px"}]]></property>
+    <property property_name="Miu_Available_Buttons_Content" property_type="css"><![CDATA[{"extra":"vertical-align: middle;\ncursor: pointer;","font-size":"8pt"}]]></property>
+    <property property_name="Miu_Selection_List_UL" property_type="css"><![CDATA[{"background-color":"@primaryLighterStill","extra":"min-height: 45px;","margin-all":"1px","width":"95%"}]]></property>
+    <property property_name="Miu_Selection_List_LI" property_type="css"><![CDATA[{"extra":"display: inline-table;"}]]></property>
+    <property property_name="Miu_Selection_Buttons_Block" property_type="css"><![CDATA[{"background-color":"@primaryLightish","border-color":"@primaryMedium","border-style":"solid","border-width":"1px","extra":"line-height: 30px;\ntext-align: center;","height":"30px","margin-bottom":"5px","margin-left":"1px","margin-right":"1px","margin-top":"5px","width":"30px"}]]></property>
+    <property property_name="Miu_Selection_Buttons_Content" property_type="css"><![CDATA[{"color":"@contentBackground","extra":"vertical-align: middle;\ncursor: pointer;","font-size":"8pt"}]]></property>
+    <property property_name="Miu_DeleteMe_Container" property_type="css"><![CDATA[{"extra":"float: right;","padding-right":"8px","padding-top":"15px"}]]></property>
+    <property property_name="Miu_DeleteMe" property_type="css"><![CDATA[{"background-color":"rgb(239, 0, 4)","border-radius":"45px","border-style":"none","border-width":"1px","color":"@textCtrlBackground","extra":"display: block;\nline-height: 20px;\ntext-align: center;\ncursor: pointer;","font-size":"10pt","width":"20px"}]]></property>
+    <property property_name="Miu_Separator_Container" property_type="css"><![CDATA[{"background-color":"@secondaryLight","border-color":"@secondaryMedium","border-style":"solid","border-width":"1px","extra":"line-height: 30px;\ntext-align: center;","height":"30px","margin-bottom":"5px","margin-left":"1px","margin-right":"1px","margin-top":"5px","width":"10px"}]]></property>
+    <property property_name="Miu_Separator" property_type="css"><![CDATA[{"extra":"vertical-align: middle;\ncursor: pointer;"}]]></property>
+    <property property_name="Miu_available_buttons_container" property_type="css"><![CDATA[{"padding-bottom":"30px"}]]></property>
+    <property property_name="Miu_Selection_Buttons_Helper" property_type="css"><![CDATA[{"background-color":"@primaryLighter","extra":"-moz-box-shadow: 2px 2px 4px 1px @dimmedTextColor;\n-webkit-box-shadow: 2px 2px 4px 1px @dimmedTextColor;\nbox-shadow: 2px 2px 4px 1px @dimmedTextColor;"}]]></property>
+    <group group_name="MarkitUp_Visual_Config" display_order="9999">
+      <title>MarkitUp Visual Configuration</title>
+      <description></description>
+    </group>
+  </admin_style_properties>
+  <admin_templates>
+    <template title="markitup_buttons_list"><![CDATA[<xen:title>{xen:phrase miu_configuration_buttons_list}</xen:title>
+<xen:require css="filter_list.css" />
+<xen:require js="js/xenforo/filter_list.js" />
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor}">{xen:phrase miu_configuration}</xen:breadcrumb>
+</xen:navigation>
+
+
+<xen:topctrl>
+	<a href="{xen:adminlink 'markitup-editor/importpopup'}" class="button">{xen:phrase miu_configuration_import_button}</a>
+	<a href="{xen:adminlink 'markitup-editor/add'}" class="button">{xen:phrase miu_configuration_add_button}</a>
+</xen:topctrl>
+
+
+
+<xen:form action="{xen:adminlink markitup-editor}" class="section">
+
+	<xen:if is="{$codes}">
+		<h2 class="subHeading">
+			<xen:include template="filter_list_controls" />
+			{xen:phrase miu_configuration_miubuttons}
+		</h2>
+
+		<ol class="FilterList Scrollable">
+			<xen:foreach loop="$codes" value="$code">
+				<xen:listitem id="{$code.miu_button_id}"
+					label="{$code.button_code}"
+					snippet="{$code.version_string}"
+					href="{xen:if $permissions, {xen:adminlink 'markitup-editor/edit', $code}}"
+					delete="{xen:adminlink 'markitup-editor/delete', $code}"
+					deletehint="{xen:phrase uninstall}">
+					<xen:popup title="{xen:phrase controls}" ctrlclass="toolsCtrl">
+						<xen:link href="{xen:adminlink 'markitup-editor/delete', $code}" displayif="{$permissions}">{xen:phrase delete}</xen:link>
+						<xen:link href="{xen:adminlink 'markitup-editor/edit', $code}" displayif="{$permissions}">{xen:phrase edit}</xen:link>
+						<xen:link href="{xen:adminlink 'markitup-editor/export', $code}" displayif="{$permissions}">{xen:phrase export}</xen:link>
+					</xen:popup>
+				</xen:listitem>
+			</xen:foreach>
+		</ol>
+
+		<p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:count $codes}</span>', 'total={xen:count $codes}'}</p>
+
+	<xen:else />
+		<div class="noResults">{xen:phrase miu_configuration_no_button}</div>
+	</xen:if>
+</xen:form>
+
+<div style="display:block;width:100%;text-align:center">
+		<a href="{xen:adminlink 'markitup-editor/exportall'}" class="button">{xen:phrase miu_configuration_exportall}</a>
+		<a href="{xen:adminlink 'markitup-editor/importall-uploader'}" class="button">{xen:phrase miu_configuration_importall}</a>
+</div>]]></template>
+    <template title="markitup_button_delete"><![CDATA[<xen:title>{xen:phrase miu_configuration_delelete_confirmation_title} {$code.button_code} ?</xen:title>
+<xen:h1>{xen:phrase miu_configuration_delelete_confirmation}</xen:h1>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink 'markitup-editor'}">{xen:phrase miu_configuration_delelete_confirmation}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:adminlink 'markitup-editor/edit', $site}">{$code.title}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:require css="delete_confirmation.css" />
+
+<xen:form action="{xen:adminlink 'markitup-editor/delete', $code}" class="deleteConfirmForm formOverlay">
+	<p>{xen:phrase miu_configuration_delelete_confirmation_question}</p>
+	<strong><a href="{xen:adminlink 'markitup-editor/edit', $code}">{$code.button_code} ?</a></strong>
+	
+	<xen:submitunit save="{xen:phrase miu_configuration_delelete_confirmation_anwser}" />
+	<input type="hidden" name="_xfConfirm" value="1" />
+</xen:form>]]></template>
+    <template title="markitup_button_edit"><![CDATA[<xen:title>{xen:if '{$code.miu_button_id}', '{xen:phrase miu_configuration_edition} {$code.button_code}', '{xen:phrase miu_configuration_addbutton}'}</xen:title>
+<xen:require css="markitup_button_edit.css" />
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor}">{xen:phrase miu_configuration}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor/buttonslist}">{xen:phrase miu_configuration_buttons_list}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:form action="{xen:adminlink 'markitup-editor/save', $code}"  method="post" class="AutoValidator">
+
+	<xen:textboxunit label="{xen:phrase miu_configuration_ButtonCode_Label}" name="button_code" value="{$code.button_code}" explain="{xen:phrase miu_configuration_ButtonCode_Desc}" />
+	<xen:textboxunit label="{xen:phrase miu_configuration_ButtonCommand_Label}" name="button_cmd" value="{$code.button_cmd}" rows="7" inputclass="Elastic" explain="{xen:phrase miu_configuration_ButtonCommand_Desc}" />
+
+	<fieldset>
+		<xen:textboxunit label="{xen:phrase miu_configuration_ButtonMainCSS_Label}" name="button_maincss" value="{$code.button_maincss}" rows="5" inputclass="Elastic" explain="{xen:phrase miu_configuration_ButtonMainCSS_Desc}" />
+		<xen:textboxunit label="{xen:phrase miu_configuration_ButtonExtraCSS_Label}" name="button_extracss" value="{$code.button_extracss}" rows="7" inputclass="Elastic" explain="{xen:phrase miu_configuration_ButtonExtraCSS_Desc}" />
+	</fieldset>
+
+	<fieldset>
+		<xen:checkboxunit label="">
+			<xen:option name="button_has_usr" selected="{$code.button_has_usr}">{xen:phrase miu_configuration_usergroups_activation}</xen:option>
+		</xen:checkboxunit>
+
+		<xen:checkboxunit label="{xen:phrase miu_configuration_usergroups_list_question}">
+			<xen:foreach loop="$code.usr_list" value="$list">
+				<xen:option name="button_usr[{$list.value}]" selected="{$list.selected}">{$list.label}</xen:option>
+			</xen:foreach>
+		</xen:checkboxunit>
+	</fieldset>
+
+	<xen:submitunit>
+			<input type="submit" name="reload" value="{xen:phrase save}" accesskey="s" {xen:if '{$code.miu_button_id}', 'class="button primary"', 'style="display:none"'} id="saveReloadButton" />
+			<xen:if is="!{$code.langdir}">
+				<input type="submit" name="saveexit" value="{xen:phrase save_and_exit}" accesskey="e" class="button OverlayTrigger" id="saveExitButton" />
+			</xen:if>
+			<input type="button" name="delete" value="{xen:phrase delete}" accesskey="d" class="button OverlayTrigger"
+				data-href="{xen:adminlink 'markitup-editor/delete', $code}" 
+				id="deleteButton" {xen:if '!{$code.miu_button_id}', 'style="display: none"'}
+			
+			/>
+			<input type="hidden" name="miu_button_id" value="{$code.miu_button_id}" />
+			<input type="hidden" name="miu_lang_dir" value="{$code.langdir}" />
+			<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+	</xen:submitunit>
+</xen:form>]]></template>
+    <template title="markitup_button_edit.css"><![CDATA[.xenForm .ctrlUnit dd .textCtrl{width:570px !important;}
+.xenForm .ctrlUnit dd {width:580px !important;}
+.xenForm .ctrlUnit dt {width:100px !important;}
+
+
+.xenOverlay .xenForm .ctrlUnit dt label{
+	margin-left:0px;
+}
+
+.xenOverlay .xenForm .ctrlUnit dt{
+	text-align:left;
+	font-weight:bolder;
+}
+]]></template>
+    <template title="markitup_button_import"><![CDATA[<xen:title>{xen:phrase miu_configuration_import_button_title}</xen:title>
+
+<xen:form action="{xen:adminlink 'markitup-editor/import'}" upload="true">
+	<xen:uploadunit label="{xen:phrase install_from_uploaded_file}:" name="upload_file" />
+	<xen:textboxunit label="{xen:phrase install_from_file_on_server}:" name="server_file" />
+
+	<xen:checkboxunit label="{xen:phrase miu_configuration_forceupdate}">
+		<xen:option name="forceupdate" selected="{$code.forceupdate}">{xen:phrase miu_configuration_forceupdate_desc}</xen:option>
+	</xen:checkboxunit>
+
+
+	<xen:submitunit save="{xen:phrase miu_configuration_import_button}" />
+</xen:form>]]></template>
+    <template title="markitup_button_importall"><![CDATA[<xen:title>{xen:phrase miu_configuration_multibuttons_importer}</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor}">{xen:phrase miu_configuration}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:form action="{xen:adminlink 'markitup-editor/importall'}" upload="true">
+	<xen:uploadunit label="{xen:phrase install_from_uploaded_file}:" name="upload_file" />
+	<xen:textboxunit label="{xen:phrase install_from_file_on_server}:" name="server_file" />
+
+	<xen:checkboxunit label="{xen:phrase miu_configuration_forceupdate}">
+		<xen:option name="forceupdate" selected="{$code.forceupdate}">{xen:phrase miu_configuration_forceupdate_multi_desc}</xen:option>
+	</xen:checkboxunit>
+
+
+	<xen:submitunit save="{xen:phrase miu_configuration_import_buttons}" />
+</xen:form>]]></template>
+    <template title="markitup_button_importall_notupdated"><![CDATA[<xen:title>{xen:phrase miu_configuration_buttons_allimport_results}</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor}">{xen:phrase miu_configuration}</xen:breadcrumb>
+</xen:navigation>
+
+<div class="sectionMain">
+	<div class="heading">{xen:phrase miu_configuration_updated_buttons}</div>
+	<div class="section">
+		<xen:if is="{$updated}">
+		<ul>
+			<xen:foreach loop="$updated" value="$button">
+				<li style="list-style:circle inside none;margin-left:10px">{$button}</li>
+			</xen:foreach>
+		<ul>
+		<xen:else />
+		{xen:phrase miu_configuration_none}
+		</xen:if>
+	</div>
+
+	<div class="heading">{xen:phrase miu_configuration_notupdated_buttons}</div>
+	<div class="section">
+		<xen:if is="{$notupdated}">
+		<ul>
+			<xen:foreach loop="$notupdated" value="$button">
+				<li style="list-style:circle inside none;margin-left:10px">{$button}</li>
+			</xen:foreach>
+		<ul>
+		<xen:else />
+		{xen:phrase miu_configuration_none}
+		</xen:if>
+	</div>
+	<div class="sectionFooter">
+		<a href="{xen:adminlink 'markitup-editor/buttonslist'}" class="button">{xen:phrase miu_configuration_gobackto_buttonslist}</a>
+	</div>
+</div>]]></template>
+    <template title="markitup_editor_config"><![CDATA[<xen:require js="js/sedo/markitup/jquery-ui.min.js" />
+<xen:require js="js/sedo/markitup/jquery.ui.touch-punch.min.js" />
+<xen:require js="js/sedo/markitup/buttons_manager.js" />
+<xen:require css="markitup_editor_config.css" />
+
+<xen:title>{xen:phrase miu_configuration_visual_config} - [{$config.config_type}]</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink markitup-editor}">{xen:phrase miu_configuration}</xen:breadcrumb>
+</xen:navigation>
+
+<div id="container_global">
+	<div id="container_choice">
+
+		<div><span id="AddNewLine">{xen:phrase miu_configuration_AddNewLine}</span><span id="CreateSeparator">{xen:phrase miu_configuration_CreateSeparator}</span></div>
+
+		<br />
+
+		<ul id="ButtonsList" class="choices connectedSortable">
+			<xen:foreach loop="$codes" value="$code">
+				<li {xen:if '{$code.miu_button_id} != "separator"', 'id="button_{$code.miu_button_id}"'} class="buttons {$code.class}"><span>{$code.button_code}&nbsp;<a href="{xen:adminlink markitup-editor}{$code.miu_button_id}/edit&langdir={$languedirection}" class="OverlayTrigger" data-overlayoptions="{&quot;fixed&quot;:false}">[+]</a></span></li>
+			</xen:foreach>
+
+		</ul>
+	</div>
+
+	<div id="container_select">
+		<xen:foreach loop="$lines" key="$id" value="$line">
+			<xen:if is="{$id} > 1">
+				<div class="deleteme"><span>X</span></div>				
+			</xen:if>
+			<ul id="list_{$config.config_type}_{$id}" class="selection connectedSortable connectedTools">
+				<xen:foreach loop="$line" value="$selected">
+					<li id="button_{$selected.miu_button_id}" class="{xen:if '{$selected.miu_button_id} == "separator"', 'separator', 'buttons {$selected.class}'}"><span>{xen:if '{$selected.miu_button_id} == "separator"', '|', '{$selected.button_code}&nbsp;<a href="{xen:adminlink markitup-editor}{$selected.miu_button_id}/edit&langdir={$languedirection}" class="OverlayTrigger" data-overlayoptions="{&quot;fixed&quot;:false}">[+]</a>'}</span></li>
+				</xen:foreach>
+			</ul>
+		</xen:foreach>
+	</div>
+</div>
+
+<form action="{xen:adminlink 'markitup-editor/postconfig', $code}" method="post" class="xenForm AutoValidator MarkitupButtons">
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd><input type="submit" value="{xen:phrase miu_configuration_UpdateNow}" class="button primary" accesskey="s" /></dd>
+	</dl>
+	<input type="hidden" name="config_id" value="{$config.config_id}" />
+	<input id="configtype" type="hidden" name="config_type" value="{$config.config_type}" />
+	<input id="target" type="hidden" name="config_buttons_order" value="{$config.config_buttons_order}" />
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+</form>
+
+<div id="AjaxResponse"></div>]]></template>
+    <template title="markitup_editor_config.css"><![CDATA[#container_choice {
+	{xen:property Miu_available_buttons_container}
+}
+#container_select {
+	{xen:property Miu_selected_buttons_container}
+}
+
+#AddNewLine { 
+	{xen:property Miu_AddNewLine}
+}
+#AddNewLine:hover { 
+	{xen:property Miu_AddNewLine_hover}
+}
+#CreateSeparator { 
+	{xen:property Miu_CreateSeparator}
+}
+#CreateSeparator:hover {
+	{xen:property Miu_CreateSeparator_hover}
+}
+
+.choices {
+	{xen:property Miu_Available_List_UL}
+}
+.choices li {
+	{xen:property Miu_Available_List_LI}
+	*display: inline; /* For IE6/IE7 */
+}
+.choices .buttons { 
+	{xen:property Miu_Available_Button_Block}
+}
+.choices .buttons span {
+	{xen:property Miu_Available_Buttons_Content}
+}
+
+.selection {
+	{xen:property Miu_Selection_List_UL}
+}
+.selection li {
+	{xen:property Miu_Selection_List_LI}
+	*display: inline; /* For IE6/IE7 */
+}
+.selection .buttons { 
+	{xen:property Miu_Selection_Buttons_Block}
+}
+.selection .buttons span {
+	{xen:property Miu_Selection_Buttons_Content}
+}
+
+.deleteme {
+	{xen:property Miu_DeleteMe_Container}
+}
+.deleteme span {
+	{xen:property Miu_DeleteMe}
+}
+
+.separator {
+	{xen:property Miu_Separator_Container}
+}
+.separator span {
+	{xen:property Miu_Separator}
+}
+
+.buttons.ui-sortable-helper {
+	{xen:property Miu_Selection_Buttons_Helper}
+}]]></template>
+    <template title="markitup_editor_response"><![CDATA[<div id="AjaxResponse">
+{xen:phrase miu_configuration_saved_ajax} {$ajaxresponse}
+</div>]]></template>
+    <template title="markitup_homepage"><![CDATA[<xen:edithint template="markitup_buttons_list" />
+<xen:edithint template="markitup_button_edit" />
+<xen:edithint template="markitup_button_edit_js" />
+<xen:edithint template="markitup_button_delete" />
+<xen:edithint template="markitup_editor_config" />
+<xen:edithint template="markitup_editor_config_js" />
+<xen:edithint template="markitup_editor_config_ajax" />
+
+
+<xen:require css="markitup_homepage.css" />
+<xen:title>{xen:phrase miu_configuration}</xen:title>
+<div id="miu" class="sectionMain">
+	<div class="subHeading">{xen:phrase miu_configuration_question}</div>
+
+	<ul class="secondaryContent container">
+		<li>
+			<a href="{xen:adminlink 'options/list/markitup_integration'}">
+				<p class="sectionMain buttons">{xen:phrase miu_configuration_link_to_global_options}</p>
+			</a>
+		</li>
+		<li>
+			<a href="{xen:adminlink 'markitup-editor/buttonslist'}">
+				<p class="sectionMain buttons">{xen:phrase miu_configuration_buttons_list}</p>
+			</a>
+		</li>
+		<li>
+			<a href="{xen:adminlink 'markitup-editor/editorconfigltr'}">
+				<p class="sectionMain buttons">{xen:phrase miu_configuration_editor_ltr}</p>
+			</a>
+		</li>
+		<li>
+			<a href="{xen:adminlink 'markitup-editor/editorconfigrtl'}">
+				<p class="sectionMain buttons">{xen:phrase miu_configuration_editor_rtl}</p>
+			</a>
+		</li>
+
+	</ul>
+</div>
+]]></template>
+    <template title="markitup_homepage.css"><![CDATA[#miu .container li {height:60px}
+#miu .buttons {background-color:{xen:property contentBackground};font-size:16px;text-align:center}
+#miu .buttons:hover {background-color:#ffffe5}
+]]></template>
+    <template title="markitup_optionsbridge_link"><![CDATA[<xen:require css="markitup_optionsbridge_link.css" />
+
+<div class="bridge">
+	<a href="{xen:adminlink 'markitup-editor'}">
+		<p class="sectionMain buttons">{xen:phrase miu_configuration}</p>
+	</a>
+</div>]]></template>
+    <template title="markitup_optionsbridge_link.css"><![CDATA[.bridge {text-align:center;padding-top:20px;}
+
+.buttons {background-color:{xen:property primaryLightest};font-size:16px;text-align:center;}
+.buttons:hover {background-color:{xen:property primaryMedium};color:{xen:property textCtrlBackground} !important;}]]></template>
+  </admin_templates>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="Sedo_MarkitUpIntegrator_Listener_ControllerPreDispatch" callback_method="Diktat" active="1" description="Pre Dispatch Listener: Force membres to use MarkitUp"/>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="Sedo_MarkitUpIntegrator_Listener_LoadClassController" callback_method="extendAccountController" active="1" description="Public Controller Listerner: MiuRteReverse"/>
+    <listener event_id="load_class_datawriter" execute_order="10" callback_class="Sedo_MarkitUpIntegrator_Listener_LoadClassDatawriter" callback_method="extendUserDataWriter" active="1" description="Datawriter Listerner: MiuRteReverse"/>
+    <listener event_id="template_create" execute_order="10" callback_class="Sedo_MarkitUpIntegrator_Listener_PreloadTemplates" callback_method="template_preload" active="1" description="Preload Templates"/>
+    <listener event_id="template_hook" execute_order="10" callback_class="Sedo_MarkitUpIntegrator_Listener_Templates" callback_method="template_hook" active="1" description="Templates Listener : Add JS and CSS"/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <optiongroups>
+    <group group_id="markitup_integration" display_order="9999" debug_only="0"/>
+    <option option_id="markitup_integration_debug_ajaxresponse" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="800"/>
+    </option>
+    <option option_id="markitup_integration_debug_devmode" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="899"/>
+    </option>
+    <option option_id="markitup_integration_debug_disable_minify_css" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="801"/>
+    </option>
+    <option option_id="markitup_integration_debug_disable_minify_js" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="802"/>
+    </option>
+    <option option_id="markitup_integration_debug_DisplayCacheData" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="804"/>
+    </option>
+    <option option_id="markitup_integration_debug_dynamicmce_error" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="815"/>
+    </option>
+    <option option_id="markitup_integration_disable_autosize" edit_format="radio" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params>0={xen:phrase no}
+1={xen:phrase yes}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="300"/>
+    </option>
+    <option option_id="markitup_integration_force_normal_editor" edit_format="radio" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params>0={xen:phrase markitup_integration_let_users_decide}
+1={xen:phrase markitup_integration_diktat}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="200"/>
+    </option>
+    <option option_id="markitup_integration_isactivated" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="1"/>
+    </option>
+    <option option_id="markitup_optionsbridge" edit_format="template" data_type="string" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params>markitup_optionsbridge_link</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="markitup_integration" display_order="900"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="admin_navigation_MarkItUp" version_id="1" version_string=""><![CDATA[MarkItUp Editor]]></phrase>
+    <phrase title="admin_permission_manageMarkItUp" version_id="3" version_string="1.2"><![CDATA[Manage MarkItUp Editor]]></phrase>
+    <phrase title="markitup_integration_diktat" version_id="3" version_string="1.2"><![CDATA[Yes, I want to force everyone to use the Markitup editor]]></phrase>
+    <phrase title="markitup_integration_let_users_decide" version_id="3" version_string="1.2"><![CDATA[No, I prefer to give users the choice (recommended)]]></phrase>
+    <phrase title="miu_button_bold" global_cache="1" version_id="1" version_string=""><![CDATA[Bold]]></phrase>
+    <phrase title="miu_button_bulleted_list" global_cache="1" version_id="1" version_string=""><![CDATA[Bulleted list]]></phrase>
+    <phrase title="miu_button_center_align" global_cache="1" version_id="1" version_string=""><![CDATA[Center Align]]></phrase>
+    <phrase title="miu_button_clean" global_cache="1" version_id="1" version_string=""><![CDATA[Clean]]></phrase>
+    <phrase title="miu_button_code" global_cache="1" version_id="1" version_string=""><![CDATA[Code]]></phrase>
+    <phrase title="miu_button_code_main" global_cache="1" version_id="1" version_string=""><![CDATA[Code/Php/Html]]></phrase>
+    <phrase title="miu_button_colors" global_cache="1" version_id="1" version_string=""><![CDATA[Colors]]></phrase>
+    <phrase title="miu_button_colors_question" global_cache="1" version_id="1" version_string=""><![CDATA[Type a hexa color: ]]></phrase>
+    <phrase title="miu_button_font_size" global_cache="1" version_id="1" version_string=""><![CDATA[Size]]></phrase>
+    <phrase title="miu_button_fulljustify_align" global_cache="1" version_id="1" version_string=""><![CDATA[Full Justify Align]]></phrase>
+    <phrase title="miu_button_global_bius" global_cache="1" version_id="1" version_string=""><![CDATA[Bold-Italic-Underline-Strike]]></phrase>
+    <phrase title="miu_button_Global_LcRj" global_cache="1" version_id="1" version_string=""><![CDATA[Left-Center-Right-Justify Align]]></phrase>
+    <phrase title="miu_button_global_lio" global_cache="1" version_id="1" version_string=""><![CDATA[List & Indent/Outdent Management]]></phrase>
+    <phrase title="miu_button_html" global_cache="1" version_id="1" version_string=""><![CDATA[Html]]></phrase>
+    <phrase title="miu_button_indent" global_cache="1" version_id="1" version_string=""><![CDATA[Indent]]></phrase>
+    <phrase title="miu_button_italic" global_cache="1" version_id="1" version_string=""><![CDATA[Italic]]></phrase>
+    <phrase title="miu_button_left_align" global_cache="1" version_id="1" version_string=""><![CDATA[Left Align]]></phrase>
+    <phrase title="miu_button_link" global_cache="1" version_id="1" version_string=""><![CDATA[Add an Url]]></phrase>
+    <phrase title="miu_button_link_text" global_cache="1" version_id="5" version_string="2.0"><![CDATA[Enter text]]></phrase>
+    <phrase title="miu_button_list_item" global_cache="1" version_id="1" version_string=""><![CDATA[List item]]></phrase>
+    <phrase title="miu_button_media" global_cache="1" version_id="5" version_string="2.0"><![CDATA[Insert media]]></phrase>
+    <phrase title="miu_button_numeric_list" global_cache="1" version_id="1" version_string=""><![CDATA[Numeric List]]></phrase>
+    <phrase title="miu_button_outdent" global_cache="1" version_id="1" version_string=""><![CDATA[Outdent]]></phrase>
+    <phrase title="miu_button_php" global_cache="1" version_id="1" version_string=""><![CDATA[Php]]></phrase>
+    <phrase title="miu_button_picture" global_cache="1" version_id="1" version_string=""><![CDATA[Inserts a Picture]]></phrase>
+    <phrase title="miu_button_picture_message" global_cache="1" version_id="3" version_string="1.2"><![CDATA[Please enter your image URL:]]></phrase>
+    <phrase title="miu_button_quotes" global_cache="1" version_id="1" version_string=""><![CDATA[Quotes]]></phrase>
+    <phrase title="miu_button_right_align" global_cache="1" version_id="1" version_string=""><![CDATA[Right Align]]></phrase>
+    <phrase title="miu_button_smilies" global_cache="1" version_id="1" version_string=""><![CDATA[Smilies]]></phrase>
+    <phrase title="miu_button_strike" global_cache="1" version_id="1" version_string=""><![CDATA[Strike]]></phrase>
+    <phrase title="miu_button_underline" global_cache="1" version_id="1" version_string=""><![CDATA[Underline]]></phrase>
+    <phrase title="miu_configuration" version_id="1" version_string=""><![CDATA[MarkItUp Configuration]]></phrase>
+    <phrase title="miu_configuration_addbutton" version_id="3" version_string="1.2"><![CDATA[Add a new button]]></phrase>
+    <phrase title="miu_configuration_AddNewLine" version_id="1" version_string=""><![CDATA[Add a new line]]></phrase>
+    <phrase title="miu_configuration_add_button" version_id="1" version_string=""><![CDATA[Add a new button]]></phrase>
+    <phrase title="miu_configuration_ButtonCodeAlreadyUsed" version_id="1" version_string="1.0"><![CDATA[This Button "Code name" is already used. Please select another "Code name" for tha button.]]></phrase>
+    <phrase title="miu_configuration_ButtonCode_Desc" version_id="1" version_string=""><![CDATA[Button short name. Will appear in the visual configuration.]]></phrase>
+    <phrase title="miu_configuration_ButtonCode_Label" version_id="1" version_string=""><![CDATA[Button Code]]></phrase>
+    <phrase title="miu_configuration_ButtonCommand_Desc" version_id="1" version_string=""><![CDATA[MarkItUp Button Command. Uses Javascript and its own code. <a href="http://markitup.jaysalvat.com/documentation/" target="_blank">See more here.</a> You can use Xen Code here.]]></phrase>
+    <phrase title="miu_configuration_ButtonCommand_Label" version_id="1" version_string=""><![CDATA[Button Set]]></phrase>
+    <phrase title="miu_configuration_ButtonDoesNotExist" version_id="1" version_string="1.0"><![CDATA[This button doesn't exist]]></phrase>
+    <phrase title="miu_configuration_ButtonExtraCSS_Desc" version_id="1" version_string=""><![CDATA[Extra CSS are used if Button is a menu and has options.]]></phrase>
+    <phrase title="miu_configuration_ButtonExtraCSS_Label" version_id="1" version_string=""><![CDATA[Button Extra CSS]]></phrase>
+    <phrase title="miu_configuration_ButtonMainCSS_Desc" version_id="1" version_string=""><![CDATA[CSS for Button Main Icon (parent menu).  If you want to use different buttons per language, use this pattern to activate a XenForo Phrase: <span style="color:orange"><b>{phrase:</b>buttonphrase<b>}</b></span>.<br /><br />
+
+In this phrase, you can put a button name for one language and another name for another language. You <u>must</u> create a XenForo Phrase and chose the following option : <b>"Cache this phrase globally"</b> to prevent to add a query for the phrase.
+<br /> <br /> 
+Same thing for the below extra css.]]></phrase>
+    <phrase title="miu_configuration_ButtonMainCSS_Label" version_id="1" version_string=""><![CDATA[Button Main CSS]]></phrase>
+    <phrase title="miu_configuration_buttons_allimport_results" version_id="5" version_string="2.0"><![CDATA[Multi buttons import results]]></phrase>
+    <phrase title="miu_configuration_buttons_list" version_id="1" version_string=""><![CDATA[Buttons Setup]]></phrase>
+    <phrase title="miu_configuration_CreateSeparator" version_id="1" version_string=""><![CDATA[Create a separator]]></phrase>
+    <phrase title="miu_configuration_delelete_confirmation" version_id="1" version_string=""><![CDATA[Delete Confirmation]]></phrase>
+    <phrase title="miu_configuration_delelete_confirmation_anwser" version_id="1" version_string=""><![CDATA[Yes, I'm sure]]></phrase>
+    <phrase title="miu_configuration_delelete_confirmation_question" version_id="1" version_string=""><![CDATA[Are you sure to delete the following button:]]></phrase>
+    <phrase title="miu_configuration_delelete_confirmation_title" version_id="1" version_string=""><![CDATA[Delete ]]></phrase>
+    <phrase title="miu_configuration_dont_have_permission" version_id="3" version_string="1.2"><![CDATA[You don't have permission to manage the Mark It Up Editor.]]></phrase>
+    <phrase title="miu_configuration_edition" version_id="3" version_string="1.2"><![CDATA[Edition:]]></phrase>
+    <phrase title="miu_configuration_editor_ltr" version_id="1" version_string=""><![CDATA[LTR Editor Visual Management (Left-to-Right)]]></phrase>
+    <phrase title="miu_configuration_editor_rtl" version_id="1" version_string=""><![CDATA[RTL Editor Visual Management (Right-to-Left)]]></phrase>
+    <phrase title="miu_configuration_exportall" version_id="5" version_string="2.0"><![CDATA[Export all buttons]]></phrase>
+    <phrase title="miu_configuration_forceupdate" version_id="1" version_string="1.0"><![CDATA[Force Update?]]></phrase>
+    <phrase title="miu_configuration_forceupdate_desc" version_id="1" version_string="1.0"><![CDATA[Select this option if you want to force and update an existing button]]></phrase>
+    <phrase title="miu_configuration_forceupdate_multi_desc" version_id="5" version_string="2.0"><![CDATA[Select this option if you want to update all existing buttons. Do not select this option if you only want to import new buttons from a buttons set. ]]></phrase>
+    <phrase title="miu_configuration_gobackto_buttonslist" version_id="5" version_string="2.0"><![CDATA[Go back to buttons list]]></phrase>
+    <phrase title="miu_configuration_importall" version_id="5" version_string="2.0"><![CDATA[Import all buttons]]></phrase>
+    <phrase title="miu_configuration_import_button" version_id="1" version_string="1.0"><![CDATA[Import Button]]></phrase>
+    <phrase title="miu_configuration_Import_ButtonCodeAlreadyUsed_ByPassSolution" version_id="1" version_string="1.0"><![CDATA[Another button with a same "Code name" has been found in your database. The importation has been stopped. If you want to replace your existing button, select the "Force Update" option on the previous page.]]></phrase>
+    <phrase title="miu_configuration_import_buttons" version_id="5" version_string="2.0"><![CDATA[Import all buttons]]></phrase>
+    <phrase title="miu_configuration_import_buttons_title" version_id="5" version_string="2.0"><![CDATA[Multi buttons import]]></phrase>
+    <phrase title="miu_configuration_import_button_title" version_id="1" version_string="1.0"><![CDATA[Button Importation]]></phrase>
+    <phrase title="miu_configuration_link_to_global_options" version_id="1" version_string=""><![CDATA[General Options]]></phrase>
+    <phrase title="miu_configuration_miubuttons" version_id="3" version_string="1.2"><![CDATA[MarkItUp Buttons]]></phrase>
+    <phrase title="miu_configuration_multibuttons_importer" version_id="5" version_string="2.0"><![CDATA[Multi Buttons Import]]></phrase>
+    <phrase title="miu_configuration_none" version_id="5" version_string="2.0"><![CDATA[None]]></phrase>
+    <phrase title="miu_configuration_notupdated_buttons" version_id="5" version_string="2.0"><![CDATA[Buttons which have NOT been updated or created:]]></phrase>
+    <phrase title="miu_configuration_no_button" version_id="1" version_string=""><![CDATA[No button]]></phrase>
+    <phrase title="miu_configuration_OnlyAlphaNumericCharacters" version_id="1" version_string="1.0"><![CDATA[Please use only alphanumeric characters (without any space) for the Button "Code name".]]></phrase>
+    <phrase title="miu_configuration_oversixlines_alert" version_id="1" version_string=""><![CDATA[The editor can support over than 6 lines, but if you go over that number, you will need to create a new image background.]]></phrase>
+    <phrase title="miu_configuration_question" version_id="1" version_string=""><![CDATA[Which options would you like to configure?]]></phrase>
+    <phrase title="miu_configuration_saved_ajax" version_id="1" version_string=""><![CDATA[Configuration saved:]]></phrase>
+    <phrase title="miu_configuration_updated_buttons" version_id="5" version_string="2.0"><![CDATA[Buttons which have been updated or created:]]></phrase>
+    <phrase title="miu_configuration_UpdateNow" version_id="1" version_string=""><![CDATA[Update Now]]></phrase>
+    <phrase title="miu_configuration_usergroups_activation" version_id="1" version_string=""><![CDATA[Click here if you want to activate Usergroups Permissions for this button]]></phrase>
+    <phrase title="miu_configuration_usergroups_list_question" version_id="1" version_string=""><![CDATA[Usergroups List]]></phrase>
+    <phrase title="miu_configuration_visual_config" version_id="1" version_string=""><![CDATA[Visual Configuration for MarkItUp]]></phrase>
+    <phrase title="miu_error_ismultibuttonxml" version_id="5" version_string="2.0"><![CDATA[This file is a MarkItUp  multi buttons xml]]></phrase>
+    <phrase title="miu_error_issinglebuttonxml" version_id="5" version_string="2.0"><![CDATA[This file is a MarkItUp single button xml]]></phrase>
+    <phrase title="miu_error_notmultibuttonxml" version_id="5" version_string="2.0"><![CDATA[This file  is not a MarkItUp multi buttons xml]]></phrase>
+    <phrase title="miu_error_notsinglebuttonxml" version_id="5" version_string="2.0"><![CDATA[This file  is not a MarkItUp single button xml]]></phrase>
+    <phrase title="miu_icon_default" global_cache="1" version_id="1" version_string=""><![CDATA[default]]></phrase>
+    <phrase title="miu_ok" version_id="3" version_string="1.2"><![CDATA[Ok]]></phrase>
+    <phrase title="miu_rte_reverse_desc" version_id="2" version_string="1.1"><![CDATA[Use the rich text editor but display bbcode text editor first <br /><span style="font-style:italic;font-size:10px;margin-left:17px">Above option must be selected</span>]]></phrase>
+    <phrase title="option_group_markitup_integration" version_id="1" version_string=""><![CDATA[Markitup Xenforo Integration]]></phrase>
+    <phrase title="option_group_markitup_integration_description" version_id="1" version_string=""><![CDATA[Markitup Editor Configuration]]></phrase>
+    <phrase title="option_markitup_integration_debug_ajaxresponse" version_id="1" version_string=""><![CDATA[[Debug] Display ajax response in Visual Management]]></phrase>
+    <phrase title="option_markitup_integration_debug_ajaxresponse_explain" version_id="1" version_string=""><![CDATA[Only for debug - display buttons list in ajax response]]></phrase>
+    <phrase title="option_markitup_integration_debug_devmode" version_id="5" version_string="2.0"><![CDATA[[Debug] Developer Mode]]></phrase>
+    <phrase title="option_markitup_integration_debug_devmode_explain" version_id="5" version_string="2.0"><![CDATA[This "developer mode" will use the full source Javascript files]]></phrase>
+    <phrase title="option_markitup_integration_debug_disable_minify_css" version_id="5" version_string="2.0"><![CDATA[[Debug] Disable MarkItUp Css Minifier]]></phrase>
+    <phrase title="option_markitup_integration_debug_disable_minify_css_explain" version_id="5" version_string="2.0"><![CDATA[Only for debug -  disable css minify in listener]]></phrase>
+    <phrase title="option_markitup_integration_debug_disable_minify_js" version_id="5" version_string="2.0"><![CDATA[[Debug] Disable MarkItUp Javascript Minify]]></phrase>
+    <phrase title="option_markitup_integration_debug_disable_minify_js_explain" version_id="5" version_string="2.0"><![CDATA[Only for debug -  disable Javascript minify in listener]]></phrase>
+    <phrase title="option_markitup_integration_debug_DisplayCacheData" version_id="5" version_string="2.0"><![CDATA[[Debug] Display Cache Data]]></phrase>
+    <phrase title="option_markitup_integration_debug_DisplayCacheData_explain" version_id="5" version_string="2.0"><![CDATA[Only for debug - Display what datas are inside the cache (will only display to admin usergroup)]]></phrase>
+    <phrase title="option_markitup_integration_debug_dynamicmce_error" version_id="5" version_string="2.0"><![CDATA[[Debug] TinyMCE Dynamic Load - Stop IE7 error]]></phrase>
+    <phrase title="option_markitup_integration_debug_dynamicmce_error_explain" version_id="5" version_string="2.0"><![CDATA[Due to a problem with relative path, Internet Explorer 7 can't load on demand TinyMCE with XenForo configuration (it still can be solved). "Load on demand" will only occur if you select to display first the MarkItUp editor. To prevent an error, a Javascript alert message will be displayed to the IE7 user.]]></phrase>
+    <phrase title="option_markitup_integration_disable_autosize" version_id="8" version_string="2.0.3"><![CDATA[Disable Javascript "Textarea Auto-Resize" addon?]]></phrase>
+    <phrase title="option_markitup_integration_disable_autosize_explain" version_id="8" version_string="2.0.3"><![CDATA[This Javascript addon will be activated when TinyMCE is not loaded (if TinyMCE is in the background, the XenForo Elastic Plugin will still work). Do you want to disable it? Default value: no.]]></phrase>
+    <phrase title="option_markitup_integration_force_normal_editor" version_id="1" version_string=""><![CDATA[Do you want to stop the WYSIWYG Editor for every one?]]></phrase>
+    <phrase title="option_markitup_integration_force_normal_editor_explain" version_id="1" version_string=""><![CDATA[This option will bypass user preferences and will stop TinyMce for everyone.]]></phrase>
+    <phrase title="option_markitup_integration_isactivated" version_id="1" version_string=""><![CDATA[Do you want to activate the Markitup Integration?]]></phrase>
+    <phrase title="option_markitup_integration_isactivated_explain" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="option_markitup_optionsbridge" version_id="1" version_string=""><![CDATA[test]]></phrase>
+    <phrase title="option_markitup_optionsbridge_explain" version_id="1" version_string=""><![CDATA[test]]></phrase>
+    <phrase title="sedo_markitup_ButtonCodeRequiredDesc" version_id="1" version_string="1.0"><![CDATA[The Button "Code name"  field is required. Don't let it blank.]]></phrase>
+    <phrase title="sedo_markitup_ButtonCommandRequiredDesc" version_id="1" version_string="1.0"><![CDATA[ The Button Command field is required. Don't let it blank.]]></phrase>
+    <phrase title="style_property_group_markitup_integration_master" version_id="1" version_string=""><![CDATA[Markitup Xenforo Integration (ADMIN VIEW)]]></phrase>
+    <phrase title="style_property_group_markitup_integration_master_desc" version_id="1" version_string=""><![CDATA[Markitup Xenforo Integration Visual Options For Admin View]]></phrase>
+    <phrase title="style_property_group_MarkitUp_Visual_Config_admin" version_id="1" version_string=""><![CDATA[MarkitUp Visual Configuration]]></phrase>
+    <phrase title="style_property_group_MarkitUp_Visual_Config_admin_desc" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_group_Miu_Public_View_master" version_id="3" version_string="1.2"><![CDATA[MarkItUp Editor - Public View]]></phrase>
+    <phrase title="style_property_group_Miu_Public_View_master_desc" version_id="3" version_string="1.2"><![CDATA[Visual options for the MarkItUp Editor]]></phrase>
+    <phrase title="style_property_Miu_AddNewLine_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_AddNewLine_hover_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_AddNewLine_hover_master" version_id="1" version_string=""><![CDATA[Add New Line Button (hover)]]></phrase>
+    <phrase title="style_property_Miu_AddNewLine_master" version_id="1" version_string=""><![CDATA[Add New Line Button]]></phrase>
+    <phrase title="style_property_Miu_available_buttons_container_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_available_buttons_container_master" version_id="1" version_string=""><![CDATA[Container for available buttons]]></phrase>
+    <phrase title="style_property_Miu_Available_Buttons_Content_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Available_Buttons_Content_master" version_id="1" version_string=""><![CDATA[Available Button Content]]></phrase>
+    <phrase title="style_property_Miu_Available_Button_Block_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Available_Button_Block_master" version_id="1" version_string=""><![CDATA[Available Button Block]]></phrase>
+    <phrase title="style_property_Miu_Available_List_LI_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Available_List_LI_master" version_id="1" version_string=""><![CDATA[List (LI) for Available Buttons]]></phrase>
+    <phrase title="style_property_Miu_Available_List_UL_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Available_List_UL_master" version_id="1" version_string=""><![CDATA[List (UL) for Available Buttons]]></phrase>
+    <phrase title="style_property_Miu_CreateSeparator_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_CreateSeparator_hover_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_CreateSeparator_hover_master" version_id="1" version_string=""><![CDATA[Create Separator Button (hover)]]></phrase>
+    <phrase title="style_property_Miu_CreateSeparator_master" version_id="1" version_string=""><![CDATA[Create Separator Button]]></phrase>
+    <phrase title="style_property_Miu_DeleteMe_Container_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_DeleteMe_Container_master" version_id="1" version_string=""><![CDATA[Delete line Container]]></phrase>
+    <phrase title="style_property_Miu_DeleteMe_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_DeleteMe_master" version_id="1" version_string=""><![CDATA[Delete line]]></phrase>
+    <phrase title="style_property_miu_public_buttons_defaultwidth_description_master" version_id="3" version_string="1.2"><![CDATA[Default: 30px]]></phrase>
+    <phrase title="style_property_miu_public_buttons_defaultwidth_master" version_id="3" version_string="1.2"><![CDATA[MarkItUp Buttons Default Width]]></phrase>
+    <phrase title="style_property_miu_public_buttons_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_buttons_drop_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_buttons_drop_master" version_id="3" version_string="1.2"><![CDATA[DropDown Button (parent)]]></phrase>
+    <phrase title="style_property_miu_public_buttons_hover_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_buttons_hover_master" version_id="3" version_string="1.2"><![CDATA[Parent Buttons - Hover]]></phrase>
+    <phrase title="style_property_miu_public_buttons_master" version_id="3" version_string="1.2"><![CDATA[Parent Buttons]]></phrase>
+    <phrase title="style_property_miu_public_container_autogradient_description_master" version_id="3" version_string="1.2"><![CDATA[Do you want to apply the automatic gradient on the Editor Container? This gradient will change according to the number of buttons lines. This function supports until 6 lines.]]></phrase>
+    <phrase title="style_property_miu_public_container_autogradient_master" version_id="3" version_string="1.2"><![CDATA[Editor Container - Automatic Gradient]]></phrase>
+    <phrase title="style_property_miu_public_container_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_container_master" version_id="3" version_string="1.2"><![CDATA[Editor Container]]></phrase>
+    <phrase title="style_property_miu_public_dropmenu_description_master" version_id="3" version_string="1.2"><![CDATA[Use this property to set the global visual options for the drop downmenu (background color, corners, etc.)]]></phrase>
+    <phrase title="style_property_miu_public_dropmenu_hover_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_dropmenu_hover_master" version_id="3" version_string="1.2"><![CDATA[Drop Menu Item - Hover]]></phrase>
+    <phrase title="style_property_miu_public_dropmenu_master" version_id="3" version_string="1.2"><![CDATA[Drop Menu container]]></phrase>
+    <phrase title="style_property_miu_public_globalcontainer_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_globalcontainer_master" version_id="3" version_string="1.2"><![CDATA[Global Container]]></phrase>
+    <phrase title="style_property_miu_public_lines_height_description_master" version_id="3" version_string="1.2"><![CDATA[Select here which should be the height of buttons lines (this property is mainly there to fix a IE7 bug). Default value: 30px.]]></phrase>
+    <phrase title="style_property_miu_public_lines_height_master" version_id="3" version_string="1.2"><![CDATA[MarkItUp Lines Height]]></phrase>
+    <phrase title="style_property_miu_public_separator_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_separator_master" version_id="3" version_string="1.2"><![CDATA[Separator Button]]></phrase>
+    <phrase title="style_property_miu_public_smiliesbox_description_master" version_id="3" version_string="1.2"><![CDATA[To use with the smilies button]]></phrase>
+    <phrase title="style_property_miu_public_smiliesbox_master" version_id="3" version_string="1.2"><![CDATA[Smilies box]]></phrase>
+    <phrase title="style_property_miu_public_smilies_number_description_master" version_id="5" version_string="2.0"><![CDATA[How many smilies would you like to to display? (Default:12) - A blank value will display them all.]]></phrase>
+    <phrase title="style_property_miu_public_smilies_number_master" version_id="3" version_string="1.2"><![CDATA[Smilies number]]></phrase>
+    <phrase title="style_property_miu_public_textarea_description_master" version_id="3" version_string="1.2"><![CDATA[]]></phrase>
+    <phrase title="style_property_miu_public_textarea_focus_activation_description_master" version_id="3" version_string="1.2"><![CDATA[This option will activate the properties of the panel "Editor Textarea - Focus". It will help you for example to disable the yellow background color when typing a text.]]></phrase>
+    <phrase title="style_property_miu_public_textarea_focus_activation_master" version_id="3" version_string="1.2"><![CDATA[Textarea Customised Focus Activation]]></phrase>
+    <phrase title="style_property_miu_public_textarea_focus_description_master" version_id="3" version_string="1.2"><![CDATA[These properties will only be active if you have selected to use a customised focus with the Textarea (see the Settings panel above).]]></phrase>
+    <phrase title="style_property_miu_public_textarea_focus_master" version_id="3" version_string="1.2"><![CDATA[Editor Textarea - Focus]]></phrase>
+    <phrase title="style_property_miu_public_textarea_master" version_id="3" version_string="1.2"><![CDATA[Editor Textarea]]></phrase>
+    <phrase title="style_property_Miu_selected_buttons_container_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_selected_buttons_container_master" version_id="1" version_string=""><![CDATA[Container for selected buttons]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Block_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Block_master" version_id="1" version_string=""><![CDATA[Selected Button Block]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Content_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Content_master" version_id="1" version_string=""><![CDATA[Selected Button Content]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Helper_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Selection_Buttons_Helper_master" version_id="1" version_string=""><![CDATA[Buttons Helper]]></phrase>
+    <phrase title="style_property_Miu_Selection_List_LI_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Selection_List_LI_master" version_id="1" version_string=""><![CDATA[List (LI) for Selected Buttons]]></phrase>
+    <phrase title="style_property_Miu_Selection_List_UL_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Selection_List_UL_master" version_id="1" version_string=""><![CDATA[List (UL) for Selected Buttons]]></phrase>
+    <phrase title="style_property_Miu_Separator_Container_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Separator_Container_master" version_id="1" version_string=""><![CDATA[Separator Container]]></phrase>
+    <phrase title="style_property_Miu_Separator_description_master" version_id="1" version_string=""><![CDATA[]]></phrase>
+    <phrase title="style_property_Miu_Separator_master" version_id="1" version_string=""><![CDATA[Separator]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="admin">
+      <prefix original_prefix="markitup-editor" class="Sedo_MarkitUpIntegrator_Route_PrefixAdmin_MarkItUp" build_link="all"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties>
+    <property property_name="Miu_available_buttons_container" property_type="css" definition="1" group_name="markitup_integration" title="Container for available buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="10" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_selected_buttons_container" property_type="css" definition="1" group_name="markitup_integration" title="Container for selected buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="20" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_AddNewLine" property_type="css" definition="1" group_name="markitup_integration" title="Add New Line Button" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="30" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_AddNewLine_hover" property_type="css" definition="1" group_name="markitup_integration" title="Add New Line Button (hover)" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="40" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_CreateSeparator" property_type="css" definition="1" group_name="markitup_integration" title="Create Separator Button" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="50" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_CreateSeparator_hover" property_type="css" definition="1" group_name="markitup_integration" title="Create Separator Button (hover)" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="60" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Available_List_UL" property_type="css" definition="1" group_name="markitup_integration" title="List (UL) for Available Buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="70" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Available_List_LI" property_type="css" definition="1" group_name="markitup_integration" title="List (LI) for Available Buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="80" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Available_Button_Block" property_type="css" definition="1" group_name="markitup_integration" title="Available Button Block" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="100" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Available_Buttons_Content" property_type="css" definition="1" group_name="markitup_integration" title="Available Button Content" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="110" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Selection_List_UL" property_type="css" definition="1" group_name="markitup_integration" title="List (UL) for Selected Buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="120" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Selection_List_LI" property_type="css" definition="1" group_name="markitup_integration" title="List (LI) for Selected Buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="130" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Selection_Buttons_Block" property_type="css" definition="1" group_name="markitup_integration" title="Selected Button Block" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="140" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Selection_Buttons_Content" property_type="css" definition="1" group_name="markitup_integration" title="Selected Button Content" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="140" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_DeleteMe_Container" property_type="css" definition="1" group_name="markitup_integration" title="Delete line Container" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="150" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_DeleteMe" property_type="css" definition="1" group_name="markitup_integration" title="Delete line" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="160" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Separator_Container" property_type="css" definition="1" group_name="markitup_integration" title="Separator Container" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="170" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Separator" property_type="css" definition="1" group_name="markitup_integration" title="Separator" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="180" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="Miu_Selection_Buttons_Helper" property_type="css" definition="1" group_name="markitup_integration" title="Buttons Helper" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="300" sub_group=""><![CDATA[[]]]></property>
+    <property property_name="miu_public_buttons" property_type="css" definition="1" group_name="Miu_Public_View" title="Parent Buttons" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="100" sub_group=""><![CDATA[{"background-color":"rgb(238, 238, 238)","background-image":"@imagePath\/xenforo\/gradients\/form-button-white-25px.png","background-position":"center","background-repeat":"repeat-x","border-bottom-color":"rgb(198, 198, 198)","border-color":"rgb(218, 218, 218)","border-radius":"4px","border-style":"solid","border-width":"1px","color":"@primaryDarker","extra":"min-width: 25px;\ntext-align: center;\nbox-shadow: 0px 1px 3px 0px rgb(200,200,210);\ntext-shadow: 0px -1px 2px white;\noutline: none;\nline-height: 25px;\ndisplay: inline-block;\ncursor: pointer;\nbox-sizing: border-box;","font-family":"Calibri, 'Trebuchet MS', Verdana, Geneva, Arial, Helvetica, sans-serif","font-size":"12px","height":"25px","margin-right":"2px","padding-bottom":"0","padding-left":"3px","padding-right":"3px","padding-top":"0","width":"@miu_public_buttons_defaultwidth"}]]></property>
+    <property property_name="miu_public_buttons_hover" property_type="css" definition="1" group_name="Miu_Public_View" title="Parent Buttons - Hover" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="110" sub_group=""><![CDATA[{"background-color":"rgba(255, 255, 229, 0.9)","background-image":"@imagePath\/xenforo\/gradients\/form-button-white-25px.png","background-position":"center","background-repeat":"repeat-x","border-bottom-color":"rgb(235, 226, 104)","border-color":"rgb(246, 246, 128)","border-radius":"4px","border-style":"solid","border-width":"1px"}]]></property>
+    <property property_name="miu_public_buttons_drop" property_type="css" definition="1" group_name="Miu_Public_View" title="DropDown Button (parent)" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="140" sub_group=""><![CDATA[{"background-color":"transparent","background-image":"styles\/sedo\/markitup\/editor\/menu.png","background-position":"top","background-repeat":"no-repeat","extra":"display: block;\nfloat: right;\nposition: absolute;\nright: 1px;","height":"11px","margin-top":"7px","width":"11px"}]]></property>
+    <property property_name="miu_public_separator" property_type="css" definition="1" group_name="Miu_Public_View" title="Separator Button" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="150" sub_group=""><![CDATA[{"background-color":"rgb(216, 215, 215)","background-image":"@imagePath\/xenforo\/gradients\/form-button-white-25px.png","background-position":"center","background-repeat":"repeat-x","border-bottom-color":"rgb(172, 171, 171)","border-color":"rgb(184, 182, 182)","border-radius":"4px","border-style":"solid","border-width":"1px","color":"@primaryDarker","extra":"outline: none;\nline-height: 22px;\ndisplay: inline-block;\nbox-sizing: border-box;\ntext-indent: -10000px;\ntop: 1px;","height":"22px","margin-right":"2px","padding-all":"0","width":"3px"}]]></property>
+    <property property_name="miu_public_dropmenu" property_type="css" definition="1" group_name="Miu_Public_View" title="Drop Menu container" description="Use this property to set the global visual options for the drop downmenu (background color, corners, etc.)" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="120" sub_group=""><![CDATA[{"background-color":"@miu_public_buttons_hover.background-color","border-bottom-color":"rgb(180, 180, 180)","border-color":"rgb(204, 204, 204)","border-radius":"4px","border-style":"solid","border-top-width":"2px","border-width":"1px","extra":"display: none;\nposition: absolute;\ntop: 22px;\nleft: 0px;\nbox-shadow: 0px 1px 4px 0px rgb(200,200,210);\nz-index: 100;","padding-all":"1px"}]]></property>
+    <property property_name="miu_public_dropmenu_hover" property_type="css" definition="1" group_name="Miu_Public_View" title="Drop Menu Item - Hover" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="130" sub_group=""><![CDATA[{"background-color":"rgba(249, 217, 176, 0.6)","border-radius":"4px","color":"@textCtrlText"}]]></property>
+    <property property_name="miu_public_lines_height" property_type="scalar" definition="1" group_name="Miu_Public_View" title="MarkItUp Lines Height" description="Select here which should be the height of buttons lines (this property is mainly there to fix a IE7 bug). Default value: 30px." css_components="" scalar_type="number" scalar_parameters="" display_order="10" sub_group=""><![CDATA[30px]]></property>
+    <property property_name="miu_public_container" property_type="css" definition="1" group_name="Miu_Public_View" title="Editor Container" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="20" sub_group=""><![CDATA[{"background-color":"rgb(253, 253, 253)","border-color":"rgb(180, 180, 180)","border-radius":"5px","border-style":"solid","border-width":"1px","font-family":"Verdana, Arial, Helvetica, sans-serif","font-size":"11px","padding-bottom":"2px","padding-left":"5px","padding-right":"5px","padding-top":"5px"}]]></property>
+    <property property_name="miu_public_container_autogradient" property_type="scalar" definition="1" group_name="Miu_Public_View" title="Editor Container - Automatic Gradient" description="Do you want to apply the automatic gradient on the Editor Container? This gradient will change according to the number of buttons lines. This function supports until 6 lines." css_components="" scalar_type="boolean" scalar_parameters="" display_order="40" sub_group=""><![CDATA[1]]></property>
+    <property property_name="miu_public_textarea" property_type="css" definition="1" group_name="Miu_Public_View" title="Editor Textarea" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="30" sub_group=""><![CDATA[{"background-color":"@miu_public_container.background-color","background-image":"styles\/sedo\/markitup\/editor\/bg-editor.png","background-repeat":"repeat-x","border-color":"rgb(94, 162, 208)","border-radius":"5px","border-style":"solid","border-width":"2px","extra":"clear: both;\nline-height: 18px;\noverflow: auto;","font-family":"Verdana, Arial, Helvetica, sans-serif","font-size":"12px","height":"320px","margin-all":"0px","padding-all":"5px"}]]></property>
+    <property property_name="miu_public_globalcontainer" property_type="css" definition="1" group_name="Miu_Public_View" title="Global Container" description="" css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="10" sub_group=""><![CDATA[{"border-color":"#F5F5F5","border-radius":"5px","border-style":"solid","border-width":"5px","extra":"*width: 95%;","margin-all":"0"}]]></property>
+    <property property_name="miu_public_textarea_focus" property_type="css" definition="1" group_name="Miu_Public_View" title="Editor Textarea - Focus" description="These properties will only be active if you have selected to use a customised focus with the Textarea (see the Settings panel above)." css_components="text,background,border,layout,extra" scalar_type="" scalar_parameters="" display_order="40" sub_group=""><![CDATA[{"background-color":"rgb(250, 250, 250)","background-image":"none"}]]></property>
+    <property property_name="miu_public_textarea_focus_activation" property_type="scalar" definition="1" group_name="Miu_Public_View" title="Textarea Customised Focus Activation" description="This option will activate the properties of the panel &quot;Editor Textarea - Focus&quot;. It will help you for example to disable the yellow background color when typing a text." css_components="" scalar_type="boolean" scalar_parameters="" display_order="50" sub_group=""><![CDATA[0]]></property>
+    <property property_name="miu_public_buttons_defaultwidth" property_type="scalar" definition="1" group_name="Miu_Public_View" title="MarkItUp Buttons Default Width" description="Default: 30px" css_components="" scalar_type="number" scalar_parameters="" display_order="20" sub_group=""><![CDATA[30px]]></property>
+    <property property_name="miu_public_smiliesbox" property_type="css" definition="1" group_name="Miu_Public_View" title="Smilies box" description="To use with the smilies button" css_components="layout,extra" scalar_type="" scalar_parameters="" display_order="500" sub_group="miu_smilies"><![CDATA[{"extra":"overflow-x: hidden;\noverflow-y: auto;","height":"80px","width":"135px"}]]></property>
+    <property property_name="miu_public_smilies_number" property_type="scalar" definition="1" group_name="Miu_Public_View" title="Smilies number" description="How many smilies would you like to to display? (Default:12) - A blank value will display them all." css_components="" scalar_type="number" scalar_parameters="" display_order="100" sub_group="miu_smilies"><![CDATA[12]]></property>
+    <group group_name="markitup_integration" display_order="9999">
+      <title>Markitup Xenforo Integration (ADMIN VIEW)</title>
+      <description>Markitup Xenforo Integration Visual Options For Admin View</description>
+    </group>
+    <group group_name="Miu_Public_View" display_order="9999">
+      <title>MarkItUp Editor - Public View</title>
+      <description>Visual options for the MarkItUp Editor</description>
+    </group>
+  </style_properties>
+  <templates>
+    <template title="MarkitUpIntegrator" version_id="8" version_string="2.0.3"><![CDATA[<xen:hook name="miu_integrator_global">
+	<xen:if is="{$xenOptions.markitup_integration_debug_devmode}">
+		<xen:require js="js/sedo/markitup/src/markitup.extra.framework.js" />
+		<xen:require js="js/sedo/markitup/src/autosize.js" />
+		<xen:require js="js/sedo/markitup/src/jquery.markitup.xen.src.js" />
+		<xen:require js="js/sedo/markitup/src/jquery.markitup.bridge.src.js" />
+		<xen:require js="js/sedo/markitup/src/markitup.extra.set.src.js" />
+	<xen:else />
+		<xen:require js="js/sedo/markitup/jquery.markitup.all.js" />
+	</xen:if>
+
+	<xen:require css="MarkitUpIntegrator.css" />
+
+	<script language="javascript">myBbcodeSettings = { nameSpace: "bbcode",	noResize: {$xenOptions.markitup_integration_disable_autosize}, markupSet: [{xen:raw $XenforoSet}]}</script>
+
+	<xen:hook name="miu_integrator_css">
+		<style type="text/css">	
+			<xen:if is="{xen:property miu_public_container_autogradient}">
+			.markItUpContainer { background: {xen:property miu_public_container.background-color} url({$stylesPath}/sedo/markitup/editor/bg-container_{$lines_number}.png) repeat-x top left !important; }
+			</xen:if>
+
+			{xen:raw $MarkitUp_Embedded_Css}
+		</style>
+	</xen:hook>
+</xen:hook>
+
+<xen:edithint template="MarkitUpIntegrator_Tools" />
+<xen:edithint template="MarkitUp_Tools_Color_Picker" />
+<xen:edithint template="MarkitUp_Tools_Url" />
+<xen:edithint template="MarkitUp_Tools_Img" />
+<xen:edithint template="MarkitUp_Tools_Media" />
+
+ 
+]]></template>
+    <template title="MarkitUpIntegrator.css" version_id="8" version_string="2.0.3"><![CDATA[<xen:comment>/********************************
+* Global options
+*********************************/</xen:comment>
+.markItUp * {
+	margin:0px; padding:0px;
+	outline:none;
+}
+
+.markItUpHeader ul, .markItUpHeader li, .markItUpEditor {
+    margin: 0 !important;
+}
+
+
+.markItUp a:link,
+.markItUp a:visited {
+	color:#000;
+	text-decoration:none;
+}
+
+.markItUpFooter {
+	width:100%;
+	cursor:n-resize;
+}
+
+<xen:if is="{$xenOptions.markitup_integration_disable_autosize}">
+.markItUpResizeHandle {
+	overflow:hidden;
+	width:22px; height:5px;
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(styles/sedo/markitup/editor/handle.png);
+	cursor:n-resize;
+}
+</xen:if>
+
+<xen:comment>/********************************
+*Global Container
+*********************************/</xen:comment>
+	.markItUp  {
+		{xen:property miu_public_globalcontainer}
+	}
+
+<xen:comment>/********************************
+*Editor Container
+*********************************/</xen:comment>
+	.markItUpContainer  {
+		{xen:property miu_public_container}
+	}
+
+<xen:comment>/********************************
+*Editor Textarea
+*********************************/</xen:comment>
+	.markItUpEditor {
+		{xen:property miu_public_textarea}
+	}
+
+<xen:comment>/********************************
+*Editor Textarea Focus
+*********************************/</xen:comment>
+
+	<xen:if is="{xen:property miu_public_textarea_focus_activation}">
+	.markItUpContainer textarea.textCtrl:focus,
+	.markItUpContainer .textCtrl:focus,
+	.markItUpContainer .textCtrl.Focus{
+		{xen:helper cssImportant,
+			{xen:property miu_public_textarea_focus}}
+		}
+	</xen:if>
+
+<xen:comment>/********************************
+* Lines
+*********************************/</xen:comment>
+
+	.markItUpHeader .markItUpLine {
+		position:relative;
+		height:{xen:property miu_public_lines_height};
+	}
+
+<xen:comment>/********************************
+* Buttons parent level
+*********************************/</xen:comment>
+
+	.markItUpHeader .markItUpParent > li {
+		list-style:none;
+		position:relative;
+		margin:0;
+		padding:0;
+	}
+
+	.markItUpHeader .markItUpParent > li > a
+	{
+		display: block;
+		position: relative;
+		left: 0;
+		margin: 0 auto;
+		top: -1px;
+		text-indent: -10000px;
+		width: 25px;
+		height: 25px;
+	}
+
+	.markItUpHeader .markItUpParent > .markItUpButton
+	{
+		{xen:property miu_public_buttons}
+		/*Hack IE7*/
+		*display: inline;
+		zoom: 1;
+	}
+
+	.markItUpHeader .markItUpParent > .markItUpButton.hasMenu
+	{
+		width: {xen:calc '{xen:property miu_public_buttons_defaultwidth} + {xen:property miu_public_buttons_drop.width}'}px;
+	}
+
+	.markItUpHeader .markItUpParent > .markItUpButton:hover
+	{
+		{xen:property miu_public_buttons_hover}
+	}
+
+<xen:comment>/********************************
+* Buttons child level 1 
+*********************************/</xen:comment>
+	.markItUpHeader .markItUpChild li a {
+		display: block;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		text-indent: -10000px;
+	}
+
+	.markItUpHeader .markItUpChild li:hover  {
+		{xen:property miu_public_dropmenu_hover}
+	}
+
+<xen:comment>/********************************
+* DropMenu
+*********************************/</xen:comment>
+	.markItUpHeader .markItUpChild {
+		{xen:property miu_public_dropmenu}
+	}
+
+	.markItUpHeader .markItUpParent .markItUpDropMenu {
+		{xen:property miu_public_buttons_drop}
+	}
+
+	/*Submenu*/
+	<xen:comment>Disable => bug with this css path => need to check this later
+	.markItUpHeader .markItUpParent ul .markItUpDropMenu {
+		background:#F5F5F5 url(styles/sedo/markitup/editor/submenu.png) no-repeat 100% 50%;
+	}
+	</xen:comment>
+
+<xen:comment>/********************************
+* Separator
+*********************************/</xen:comment>
+	.markItUpHeader .markItUpParent .markItUpSeparator {
+		{xen:property miu_public_separator}
+	-xenforo-nomatch-margin: 0 2px !important;
+		/*Hack IE7*/
+		*display: inline;
+		zoom: 1;
+	}
+
+	.markItUpHeader .markItUpParent .markItUpSeparator span
+	{
+		display: block;
+		position: relative;
+		left: 0;
+		margin: 0 auto;
+		top: -1px;
+		text-indent: -10000px;
+		width: 1px;
+		height:{xen:property miu_public_separator.height};
+	}
+
+	/*Check if for submenu*/
+	.markItUpHeader .markItUpParent ul .markItUpSeparator {
+		width:auto;
+		height:1px;
+		margin:0px;
+	}
+
+	.markItUpHeader .markItUpParent ul .markItUpSeparator span {
+		visibility:hidden;
+	}
+
+<xen:comment>/********************************
+* MiuToTinyMCE Trigger
+*********************************/</xen:comment>
+	.miu_trigger{
+		font-size: 11px;
+		margin-left:2px;
+	}
+
+<xen:comment>/********************************
+* Force Css to use Xen Button Style in Miu
+*********************************/</xen:comment>
+
+	.markItUpHeader .button {
+	{xen:helper cssImportant, {xen:property button}}
+	}
+
+	.markItUpHeader .button:hover {
+	{xen:helper cssImportant, {xen:property buttonHover}}
+	}
+
+	.markItUpHeader .button:focus {
+	{xen:helper cssImportant, {xen:property buttonFocus}}
+	}
+
+<xen:comment>/********************************
+* Smilie button display
+*********************************/</xen:comment>
+
+	.markItUpHeader .miu_smilies .markItUpChild {
+		{xen:property miu_public_smiliesbox}
+		*height: {xen:calc '{xen:property miu_public_smiliesbox.height} + 5'}px;
+	}
+
+
+<xen:comment>/********************************
+* TinyMCE Overlay IE8
+*********************************/</xen:comment>
+	.xenOverlay .mceLayoutSafe{
+		min-height:260px;
+		box-sizing: border-box;
+	}]]></template>
+    <template title="MarkitUpIntegrator_RteReverse" version_id="5" version_string="2.0"><![CDATA[<xen:if is="{$xenOptions.markitup_integration_isactivated}">
+<xen:require js="js/sedo/markitup/markitup.useroptions.revert.js" />
+	<li>
+		<label for="ctrl_miu_rte_reverse"><input type="checkbox" name="miu_rte_reverse" value="1" id="ctrl_miu_rte_reverse" {xen:checked "{$visitor.miu_rte_reverse}"} />
+			{xen:phrase miu_rte_reverse_desc}
+		</label>
+	</li>
+</xen:if>]]></template>
+    <template title="MarkitUpIntegrator_Tools" version_id="8" version_string="2.0.3"><![CDATA[<xen:require css="MarkitUpIntegrator_Tools.css" />
+
+<xen:comment>
+	All elements inside this template will be included above the editor
+</xen:comment>
+
+
+<xen:include template="MarkitUp_Tools_Color_Picker" />
+
+
+ 
+
+
+]]></template>
+    <template title="MarkitUpIntegrator_Tools.css" version_id="8" version_string="2.0.3"><![CDATA[	.miu_popup {
+		width: 100%;
+		z-index: 10010;
+	}
+
+	.miu_popup_content {
+		display: block;
+		width: 350px;
+		box-shadow: 0 1px 3px 0 #C8C8D2;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: left;
+		{xen:property primaryContent.background}
+	}
+
+	.miu_heading {
+		border-radius: 0 0 0 0;
+	}
+	.miu_tools_block {
+		padding: 3px;
+	}
+
+	.miu_popup .primaryContent input,
+	.miu_popup .secondaryContent input {
+		font-size: 15px;
+		padding: 5px;
+	}
+	.miuUnit div {
+		display: inline-block;
+		margin-right: 5px;
+	}]]></template>
+    <template title="MarkitUp_Tools_Color_Picker" version_id="5" version_string="2.0"><![CDATA[<xen:comment>The JS file must be loaded via jQuery -> avoid to load another 10ko script
+	<xen:require js="js/sedo/markitup/farbtastic.js" />
+</xen:comment>
+<xen:require css="MarkitUp_Tools_Color_Picker.css" />
+
+
+<div id="miuAdvColorPicker" class="miuTools" data-fail="{xen:jsescape {xen:phrase miu_button_colors_question}}">
+		<div id="miuSelectColor"></div>
+
+		<ul>
+			<li>{xen:phrase color} <input type="text" id="miuGetColor" name="miugetcolor" value="#123456" /></li>
+			<li><div id="miuSendColor" class="button">{xen:phrase miu_ok}</div></li>	
+		</ul>
+
+</div>]]></template>
+    <template title="MarkitUp_Tools_Color_Picker.css" version_id="5" version_string="2.0"><![CDATA[/**
+ * Farbtastic Color Picker 1.2
+ * © 2008 Steven Wittens
+ */
+.farbtastic * {
+	position: absolute;
+	cursor: crosshair;
+}
+.farbtastic, .farbtastic .wheel {
+	width: 195px;
+	height: 195px;
+}
+.farbtastic .color, .farbtastic .overlay {
+	top: 47px;
+	left: 47px;
+	width: 101px;
+	height: 101px;
+}
+.farbtastic .wheel {
+	background: url(styles/sedo/markitup/editor/wheel.png) no-repeat;
+	width: 195px;
+	height: 195px;
+}
+.farbtastic .overlay {
+	background: url(styles/sedo/markitup/editor/mask.png) no-repeat;
+}
+.farbtastic .marker {
+	width: 17px;
+	height: 17px;
+	margin: -8px 0 0 -8px;
+	overflow: hidden; 
+	background: url(styles/sedo/markitup/editor/marker.png) no-repeat;
+}
+
+/**
+ * Settings for XenForo
+ */
+#miuAdvColorPicker {
+	{xen:property miu_public_dropmenu.background};
+	{xen:property miu_public_dropmenu.border};
+	display:none;
+	position:absolute;
+	width:220px;
+	height:225px;
+	z-index:10000;
+	padding:5px;
+}
+
+.farbtastic {
+	position: relative;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#miuAdvColorPicker ul {
+	width:220px;
+	height:30px;
+}
+#miuAdvColorPicker ul li {
+	display:inline-block;
+	height:30px;
+	line-height:30px;
+	vertical-align:middle;
+	*display: inline;
+	zoom: 1;
+	margin:0;
+}
+
+#miuSendColor{
+	width:35px;
+	height:30px;
+	line-height:30px;
+	vertical-align:middle;	
+}
+]]></template>
+    <template title="MarkitUp_Tools_Img" version_id="8" version_string="2.0.3"><![CDATA[<form method="post" class="section miu_popup">
+	<div id="miuToolImg" class="miuToolImg">
+		<div class="miu_popup_content">
+			<h1 class="heading miu_heading">{xen:phrase insert_image}</h1>
+			<div class="primaryContent">
+				<dl class="miu_tools_block">
+					<dt>{xen:phrase enter_image_url}</dt>
+					<dd><input class="miuLinkImg textCtrl miuFocus" type="text" name="miulinkimg" size="35"></dd>
+				</dl>
+			</div>
+			<div class="sectionFooter">
+				<div style="float: right">
+					<input type="button" id="cancel" name="cancel" value="{xen:phrase cancel}" class="button close" />
+				</div>
+				<input type="submit" id="insert" name="insert" value="{xen:phrase insert}" class="miuTrigger button primary" />
+			</div>
+			<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+		</div>
+	</div>
+</form>]]></template>
+    <template title="MarkitUp_Tools_Media" version_id="8" version_string="2.0.3"><![CDATA[<form method="post" class="section miu_popup">
+	<div id="miuToolMedia" class="miuToolMedia">
+		<div class="miu_popup_content">
+			<h1 class="heading miu_heading">{xen:phrase embed_media}</h1>
+	
+			<div class="primaryContent">
+				<dl class="miu_tools_block">
+					<dt>{xen:phrase enter_media_url}</dt>
+					<dd><input class="miuLinkMedia textCtrl miuFocus" type="text" name="miulinkmedia" size="35"></dd>
+				</dl>
+			</div>
+	
+			<div class="secondaryContent">
+				{xen:phrase you_may_embed_media_from_following_sites}:
+				<xen:foreach loop="$sites" value="$site" count="$totalSites" i="$i">
+					<xen:if is="{$site.supported}">
+						<a href="{$site.site_url}" target="_blank" rel="nofollow">{$site.site_title}</a>;
+					</xen:if>
+				</xen:foreach>
+			</div>
+	
+			<div class="sectionFooter">
+				<div style="float: right">
+					<input type="button" id="cancel" name="cancel" value="{xen:phrase cancel}" class="button close" />
+				</div>
+				<input type="submit" id="insert" name="insert" value="{xen:phrase insert}" class="miuTrigger button primary" />
+			</div>
+			<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+		</div>
+	</div>
+</form>]]></template>
+    <template title="MarkitUp_Tools_Url" version_id="8" version_string="2.0.3"><![CDATA[<form method="post" class="section miu_popup">
+	<div id="miuToolLink" class="miuToolLink">
+		<div class="miu_popup_content">
+			<h1 class="heading miu_heading">{xen:phrase insert_link}</h1>
+	
+			<div class="primaryContent">
+				<dl class="miu_tools_block">
+					<dt>{xen:phrase enter_link_url}</dt>
+					<dd><input class="miuLinkUrl textCtrl" type="text" name="miulinkurl" size="35"></dd>
+				</dl>
+				<dl class="miu_tools_block">
+					<dt>{xen:phrase miu_button_link_text}</dt>
+					<dd><input class="miuLinkText textCtrl" type="text" name="miulinktext" size="35"></dd>
+				</dl>
+			</div>
+	
+			<div class="sectionFooter">
+				<div style="float: right">
+					<input type="button" id="cancel" name="cancel" value="{xen:phrase cancel}" class="button close" />
+				</div>
+				<input type="submit" id="insert" name="insert" value="{xen:phrase insert}" class="miuTrigger button primary" />
+			</div>
+			<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+		</div>
+	</div>
+</form>]]></template>
+  </templates>
+  <bb_code_media_sites/>
+  <template_modifications>
+    <modification title="Editor Mods" template_title="editor" execute_order="10" modification_type="callback" callback_class="Sedo_MarkitUpIntegrator_Tms_Mods" callback_method="editor" description="" version_id="5" version_string="2.0" active="1">
+      <search_value><![CDATA[]]></search_value>
+      <replace_value><![CDATA[]]></replace_value>
+    </modification>
+    <modification title="EditorJs Mods" template_title="editor_js_setup" execute_order="10" modification_type="callback" callback_class="Sedo_MarkitUpIntegrator_Tms_Mods" callback_method="editorjs" description="" version_id="5" version_string="2.0" active="1">
+      <search_value><![CDATA[]]></search_value>
+      <replace_value><![CDATA[]]></replace_value>
+    </modification>
+    <modification title="Miu rte reverse 3" template_title="account_preferences" execute_order="10" modification_type="preg_replace" callback_class="" callback_method="" description="User field" version_id="5" version_string="2.0" active="1">
+      <search_value><![CDATA[#([ \t]*)<li>.+?ctrl_enable_rte(?s).+?</li>#i]]></search_value>
+      <replace_value><![CDATA[$1<xen:if is="!{$xenOptions.markitup_integration_force_normal_editor}">
+$0
+$1<xen:include template="MarkitUpIntegrator_RteReverse"></xen:include>
+$1</xen:if>
+]]></replace_value>
+    </modification>
+  </template_modifications>
+</addon>
