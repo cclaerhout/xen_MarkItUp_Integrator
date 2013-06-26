@@ -39,23 +39,28 @@
 		init: function($element)
 		{
 			//Init Miu & Autosize
-			var t = XenForo.MiuToTiny;
+			var self = XenForo.MiuToTiny;
 			
-			t.editor = $element.siblings('textarea.MiuTarget')
+			self.editor = $element.siblings('textarea.MiuTarget')
 				.markItUp(myBbcodeSettings)
 				.show();
 
 			if(myBbcodeSettings.noResize !== 1)
 			{
-				t.editor.autosize();
+				self.editor.autosize();
 			}
 				
 			//Check if editor has html content & if yes, parse it (avoid problems with TinyMCE autosave)
-			XenForo.MiuToTiny.htmlContentCheck(t.editor);
+			XenForo.MiuToTiny.htmlContentCheck(self.editor);
 
 			//Load TinyMCE on click				
 			$element.click(function(e) {
 				e.preventDefault();
+
+				if(jQuery.fn.jquery !== '1.5.2'){
+					alert('This function has been disabled');
+					return false;// BUGS WITH XEN 1.2
+				}
 
 				if ($.browser.msie && parseInt($.browser.version, 10) <= 7 && ($(this).attr('data-stopsafe') == 0)) {
 					return alert('Not compatible with Internet Explorer '+parseInt($.browser.version, 10));
@@ -65,52 +70,62 @@
 					.html($(this).attr('data-load')+'...')
 					.siblings('.bbcode')
 					.find('textarea.MiuTarget');
-								
-				t.trigger = $(this);
-				t.activeMiuEditor = $miuEditor;
-				t.activeMiuEditorId = $miuEditor.attr('id').replace(/_miu/g, ''); //needed for editor_js_setup template
-				t.activeMiuEditorVal = $miuEditor.val();
+					
+				var src = ($(this).data('src') == 'mce4') ? 'mce4' : 'xen',
+				cName = $(this).data('cName'), cAction = $(this).data('cAction'), vName = $(this).data('vName');
 				
+				self.isMCE4 = (src == 'mce4') ? true : false;
+
+				self.trigger = $(this);
+				self.activeMiuEditor = $miuEditor;
+				self.activeMiuEditorId = $miuEditor.attr('id').replace(/_miu/g, ''); //needed for editor_js_setup template
+				self.activeMiuEditorVal = $miuEditor.val();
+
 	  			XenForo.ajax(
-					'index.php?editor/miu-to-tiny',
-					{ editorId: t.activeMiuEditorId, bbCodeContent: t.activeMiuEditorVal },
-		  				XenForo.MiuToTiny.ajaxSuccess
+					'index.php?editor/miu-to-tiny',	{
+						editorId: self.activeMiuEditorId,
+						bbCodeContent: self.activeMiuEditorVal,
+						src: src,
+						cName: cName,
+						cAction: cAction,
+						vName: vName
+					}, XenForo.MiuToTiny.ajaxSuccess
 				);		
 			});
 		},
 		
 		ajaxSuccess: function(ajaxData)
 		{
+
 			if (XenForo.hasResponseError(ajaxData) || typeof(ajaxData.templateHtml) == 'undefined')
 			{
 				return;
 			}
-	
+
 		  		if (ajaxData.templateHtml)
 		  		{
-					var t = XenForo.MiuToTiny, un = 'undefined';
-					
-					$activeEditor = $('#'+t.activeMiuEditorId+'_html');
+					var self = XenForo.MiuToTiny, un = 'undefined';
+					$activeEditor = $('#'+self.activeMiuEditorId+'_html');
 					
 					//Move all Miu Tools before doing anything else
-					$form = t.trigger.parents('form');
+					$form = self.trigger.parents('form');
 					$('.miuTools').prependTo($form);
 
 		  			//Replace bbCode content with html content, remove Miu, and hide editor
-		  			$activeEditor.val(ajaxData.htmlContent);
-		  			t.activeMiuEditor.parents('.bbcode').remove();
+		  			$activeEditor.val(ajaxData.htmlContent); //Xen 1.2 editors don't care of this and init the editors
+		  			self.activeMiuEditor.parents('.bbcode').remove();
 
 		  			new XenForo.ExtLoader(ajaxData, function()
 		  			{
 		  				//Load editor_js_setup template
-		  				$(ajaxData.templateHtml).xfInsert('replaceAll', t.trigger, 'xfFadeIn');
+		  				$(ajaxData.templateHtml).xfInsert('replaceAll', self.trigger, 'xfFadeIn');
 		  				
-		  				if(typeof XenForo.BbmCustomEditor !== un)
+		  				if(typeof XenForo.BbmCustomEditor !== un && !self.isMCE4)
 		  				{
 		  					new XenForo.BbmCustomEditor($activeEditor);
 		  				}
 		  				
-		  				if(typeof XenForo.BbCodeWysiwygEditor !== un)
+		  				if(typeof XenForo.BbCodeWysiwygEditor !== un && !self.isMCE4)
 		  				{
 			  				new XenForo.BbCodeWysiwygEditor($activeEditor);
 			  			}
@@ -138,14 +153,14 @@
 
 		htmlToBbcode: function(ajaxData)
 		{
-			var t = XenForo.MiuToTiny;
+			var self = XenForo.MiuToTiny;
 			
 			if (XenForo.hasResponseError(ajaxData) || typeof(ajaxData.bbCode) == 'undefined')
 			{
 				return false;
 			}
 			
-			t.editor.val(ajaxData.bbCode);
+			self.editor.val(ajaxData.bbCode);
 		}				
 	};
 
