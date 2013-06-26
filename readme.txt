@@ -40,7 +40,8 @@ Developped and Tested on the following Browsers:
 
 #List of available buttons
 
-	Bold,Center,Clean,Code,Colors,Fonts,Indent,Italic,Left,Link,Listbullet,Listitem,Listnumeric,Outdent,Picture,Quotes,Right,Size,Smilies,Strike,Underline,Media, Global_BiUs, Global_LcRj, Global_LIO, justify  & Keytouch
+	The unsupported version will only be provided with the following buttons: bold, italic, underline
+	The supported version will provided with those:  Bold,Center,Clean,Code,Colors,Fonts,Indent,Italic,Left,Link,Listbullet,Listitem,Listnumeric,Outdent,Picture,Quotes,Right,Size,Smilies,Strike,Underline,Media, Global_BiUs, Global_LcRj, Global_LIO, justify  & Keytouch
 
 	> Global_BiUs: a menu button with inside the following options: Bold, Italic, Underline, Strike
 	> Global_LcRj: a menu button with inside the following options: Left, Center, Right, Justify
@@ -93,3 +94,11 @@ NOTE: 	Don't Change any visual options in ADMIN->Appearance->Style Properties->M
 **********************************
 The MarkItup Editor Editor is under the MIT and GPL licenses, which means it is "free of charge" and can be used "without restriction". 
 My Integration to XenForo is under the Creative Commons BY 3.0 license (http://creativecommons.org/licenses/by/3.0/).
+
+I'm still asking for support from users. 99,9% of the time, you my dear reader, you will download an addon, will have a huge list of requests, but you will never support the coder even if he spent time to give you a free support. So Considering this, all editor buttons won't be provided inside the addon archive. If you want them, you will have to support this addon. If you don't like this, then don't download this addon. This choice could be discussed in that thread http://xenforo.com/community/threads/donations-from-your-add-ons.42528/#post-459689, but not in this addon one.
+
+If you're a 0 post member and are planning to release this addon on warez board, don't even bother to contact me pretending you want to support me, I will not reply to you.
+
+If you're ready to support this addon with a minimum of 15 euros, please contact me by pm.
+
+If XenForo developers would like to use this addon to do a better one and provide a bbcode editor with XenForo, the whole code will be donated to them without any conditions.

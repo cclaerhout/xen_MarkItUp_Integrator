@@ -9,12 +9,18 @@ class Sedo_MarkitUpIntegrator_ControllerPublic_Editor extends XFCP_Sedo_MarkitUp
 			$bbCodeContent = $this->_input->filterSingle('bbCodeContent', XenForo_Input::STRING);
 			$bbCodeParser = new XenForo_BbCode_Parser(XenForo_BbCode_Formatter_Base::create('Wysiwyg'));
 			$htmlContent = $bbCodeParser->render($bbCodeContent);
-			
-			return $this->responseView('Sedo_MarkitUpIntegrator_ViewPublic_Editor_MiuToTiny', 'editor_js_setup', array(
+
+			$params = array(
 				'editorId' => $this->_input->filterSingle('editorId', XenForo_Input::STRING),
-				'smilies' => XenForo_ViewPublic_Helper_Editor::getEditorSmilies(),
 				'htmlContent' => $htmlContent
-			));
+			);
+
+			if(XenForo_Application::get('options')->get('currentVersionId') < 1020031)
+			{
+				$params['smilies'] = XenForo_ViewPublic_Helper_Editor::getEditorSmilies();
+			}
+			
+			return $this->responseView('Sedo_MarkitUpIntegrator_ViewPublic_Editor_MiuToTiny', 'editor_js_setup', $params);
 		}
 	}
 

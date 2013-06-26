@@ -20,6 +20,9 @@
 	
 	XenForo.miu_notrte = function($element)
 	{
+		if($element.hasClass('BbCodeWysiwygEditor'))
+			return false;
+		
 		if(!$element.hasClass('MiuRevert') && !window.tinyMCE)
 		{
 			$element.markItUp(myBbcodeSettings);
@@ -85,20 +88,32 @@
 	
 		  		if (ajaxData.templateHtml)
 		  		{
-					var t = XenForo.MiuToTiny;
+					var t = XenForo.MiuToTiny, un = 'undefined';
+					
+					$activeEditor = $('#'+t.activeMiuEditorId+'_html');
 					
 					//Move all Miu Tools before doing anything else
 					$form = t.trigger.parents('form');
 					$('.miuTools').prependTo($form);
 
 		  			//Replace bbCode content with html content, remove Miu, and hide editor
-		  			$('#'+t.activeMiuEditorId+'_html').val(ajaxData.htmlContent);
+		  			$activeEditor.val(ajaxData.htmlContent);
 		  			t.activeMiuEditor.parents('.bbcode').remove();
 
 		  			new XenForo.ExtLoader(ajaxData, function()
 		  			{
 		  				//Load editor_js_setup template
 		  				$(ajaxData.templateHtml).xfInsert('replaceAll', t.trigger, 'xfFadeIn');
+		  				
+		  				if(typeof XenForo.BbmCustomEditor !== un)
+		  				{
+		  					new XenForo.BbmCustomEditor($activeEditor);
+		  				}
+		  				
+		  				if(typeof XenForo.BbCodeWysiwygEditor !== un)
+		  				{
+			  				new XenForo.BbCodeWysiwygEditor($activeEditor);
+			  			}
 		  			});
 		  		}
 		},
