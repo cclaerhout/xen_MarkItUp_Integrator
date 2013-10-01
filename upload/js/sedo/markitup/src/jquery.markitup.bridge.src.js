@@ -1,4 +1,3 @@
-
 /****
 *	---MIU ADDON FOR XENFORO by Sedo---
 *
@@ -41,7 +40,7 @@
 			//Init Miu & Autosize
 			var self = XenForo.MiuToTiny;
 			
-			self.editor = $element.siblings('textarea.MiuTarget')
+			self.editor = $element.parents('form').find('textarea.MiuTarget')
 				.markItUp(myBbcodeSettings)
 				.show();
 
@@ -49,46 +48,37 @@
 			{
 				self.editor.autosize();
 			}
-				
+			
+			if(self.editor.length == 0)
+				return false;
 			//Check if editor has html content & if yes, parse it (avoid problems with TinyMCE autosave)
 			XenForo.MiuToTiny.htmlContentCheck(self.editor);
 
 			//Load TinyMCE on click				
 			$element.click(function(e) {
 				e.preventDefault();
+				e.stopPropagation();//Needed for overlays
 
-				if(jQuery.fn.jquery !== '1.5.2'){
-					alert('This function has been disabled');
-					return false;// BUGS WITH XEN 1.2
-				}
+				$src = $(this);
 
 				if ($.browser.msie && parseInt($.browser.version, 10) <= 7 && ($(this).attr('data-stopsafe') == 0)) {
 					return alert('Not compatible with Internet Explorer '+parseInt($.browser.version, 10));
 				}
 			
-				$miuEditor = $(this)
-					.html($(this).attr('data-load')+'...')
+				$miuEditor = $src
+					.html($src.attr('data-load')+'...')
 					.siblings('.bbcode')
 					.find('textarea.MiuTarget');
 					
-				var src = ($(this).data('src') == 'mce4') ? 'mce4' : 'xen',
-				cName = $(this).data('cName'), cAction = $(this).data('cAction'), vName = $(this).data('vName');
-				
-				self.isMCE4 = (src == 'mce4') ? true : false;
 
-				self.trigger = $(this);
+				self.trigger = $src;
 				self.activeMiuEditor = $miuEditor;
-				self.activeMiuEditorId = $miuEditor.attr('id').replace(/_miu/g, ''); //needed for editor_js_setup template
-				self.activeMiuEditorVal = $miuEditor.val();
 
 	  			XenForo.ajax(
 					'index.php?editor/miu-to-tiny',	{
-						editorId: self.activeMiuEditorId,
-						bbCodeContent: self.activeMiuEditorVal,
-						src: src,
-						cName: cName,
-						cAction: cAction,
-						vName: vName
+						editorId: $miuEditor.attr('id'),
+						editorName: $miuEditor.attr('name'),
+						bbCodeContent: $miuEditor.val()
 					}, XenForo.MiuToTiny.ajaxSuccess
 				);		
 			});
@@ -96,41 +86,38 @@
 		
 		ajaxSuccess: function(ajaxData)
 		{
-
-			if (XenForo.hasResponseError(ajaxData) || typeof(ajaxData.templateHtml) == 'undefined')
+			var self = XenForo.MiuToTiny, un = 'undefined';
+			
+			if (	XenForo.hasResponseError(ajaxData) 
+				|| typeof(ajaxData.templateHtml) == un
+				|| !ajaxData.templateHtml
+			)
 			{
 				return;
 			}
 
-		  		if (ajaxData.templateHtml)
-		  		{
-					var self = XenForo.MiuToTiny, un = 'undefined';
-					$activeEditor = $('#'+self.activeMiuEditorId+'_html');
-					
-					//Move all Miu Tools before doing anything else
-					$form = self.trigger.parents('form');
-					$('.miuTools').prependTo($form);
+			//Move all Miu Tools before doing anything else
+			$form = self.trigger.parents('form');
+			$('.miuTools').prependTo($form);
 
-		  			//Replace bbCode content with html content, remove Miu, and hide editor
-		  			$activeEditor.val(ajaxData.htmlContent); //Xen 1.2 editors don't care of this and init the editors
-		  			self.activeMiuEditor.parents('.bbcode').remove();
+			//Remove the original editor
+			self.activeMiuEditor.parents('.bbcode').remove();
 
-		  			new XenForo.ExtLoader(ajaxData, function()
-		  			{
-		  				//Load editor_js_setup template
-		  				$(ajaxData.templateHtml).xfInsert('replaceAll', self.trigger, 'xfFadeIn');
-		  				
-		  				if(typeof XenForo.BbmCustomEditor !== un && !self.isMCE4)
-		  				{
-		  					new XenForo.BbmCustomEditor($activeEditor);
-		  				}
-		  				
-		  				if(typeof XenForo.BbCodeWysiwygEditor !== un && !self.isMCE4)
-		  				{
-			  				new XenForo.BbCodeWysiwygEditor($activeEditor);
-			  			}
-		  			});
-		  		}
+			//Get template
+	  		$templateHtml = $(ajaxData.templateHtml);
+		  		
+			//Get the elements that should be hidden - Why ? The ExtLoader or the xfInsert function show them all, I'm not sure why.
+			$hideThis = $templateHtml.filter(function( index ) {
+				if(this.style) {
+					return $(this).css('display') == 'none';
+				}
+			})
+
+		  	new XenForo.ExtLoader(ajaxData, function()
+		  	{
+	  			$templateHtml.xfInsert('replaceAll', self.trigger, 'xfFadeIn');
+	  			$hideThis.hide();
+			});
 		},
 
 		htmlContentCheck: function($editor)
