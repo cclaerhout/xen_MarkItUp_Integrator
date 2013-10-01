@@ -125,7 +125,7 @@
 	{name:'99CCFF', openWith:'[color=#99CCFF]', closeWith:'[/color]', className:"col5-6" },
 	{name:'CC99FF', openWith:'[color=#CC99FF]', closeWith:'[/color]', className:"col5-7" },
 	{name:'FFFFFF', openWith:'[color=#FFFFFF]', closeWith:'[/color]', className:"col5-8" },
-	{name:'{xen:jsescape {xen:phrase more_colors}, single}',
+	{name:'{xen:jsescape {xen:phrase miu_more_colors}, single}',
 	beforeInsert:function(miu) { return XenForo.miuExtra.colorPicker(miu, "{$javaScriptSource}"); },
 	className:"customColors button" }
 ]},</button_cmd>

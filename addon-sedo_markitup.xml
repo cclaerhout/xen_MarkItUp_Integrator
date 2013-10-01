@@ -574,11 +574,14 @@ Same thing for the below extra css.]]></phrase>
     <phrase title="miu_configuration_usergroups_activation" version_id="1" version_string=""><![CDATA[Click here if you want to activate Usergroups Permissions for this button]]></phrase>
     <phrase title="miu_configuration_usergroups_list_question" version_id="1" version_string=""><![CDATA[Usergroups List]]></phrase>
     <phrase title="miu_configuration_visual_config" version_id="1" version_string=""><![CDATA[Visual Configuration for MarkItUp]]></phrase>
+    <phrase title="miu_enter_image_url" version_id="14" version_string="2.2.2"><![CDATA[Enter image url]]></phrase>
     <phrase title="miu_error_ismultibuttonxml" version_id="5" version_string="2.0"><![CDATA[This file is a MarkItUp  multi buttons xml]]></phrase>
     <phrase title="miu_error_issinglebuttonxml" version_id="5" version_string="2.0"><![CDATA[This file is a MarkItUp single button xml]]></phrase>
     <phrase title="miu_error_notmultibuttonxml" version_id="5" version_string="2.0"><![CDATA[This file  is not a MarkItUp multi buttons xml]]></phrase>
     <phrase title="miu_error_notsinglebuttonxml" version_id="5" version_string="2.0"><![CDATA[This file  is not a MarkItUp single button xml]]></phrase>
     <phrase title="miu_icon_default" global_cache="1" version_id="1" version_string=""><![CDATA[default]]></phrase>
+    <phrase title="miu_insert_image" version_id="14" version_string="2.2.2"><![CDATA[Insert image]]></phrase>
+    <phrase title="miu_more_colors" global_cache="1" version_id="14" version_string="2.2.2"><![CDATA[More colors]]></phrase>
     <phrase title="miu_ok" version_id="3" version_string="1.2"><![CDATA[Ok]]></phrase>
     <phrase title="miu_rte_reverse_desc" version_id="2" version_string="1.1"><![CDATA[Use the rich text editor but display bbcode text editor first <br /><span style="font-style:italic;font-size:10px;margin-left:17px">Above option must be selected</span>]]></phrase>
     <phrase title="option_group_markitup_integration" version_id="1" version_string=""><![CDATA[Markitup Xenforo Integration]]></phrase>
@@ -1138,13 +1141,13 @@ Same thing for the below extra css.]]></phrase>
 	vertical-align:middle;	
 }
 ]]></template>
-    <template title="MarkitUp_Tools_Img" version_id="8" version_string="2.0.3"><![CDATA[<form method="post" class="section miu_popup">
+    <template title="MarkitUp_Tools_Img" version_id="14" version_string="2.2.2"><![CDATA[<form method="post" class="section miu_popup">
 	<div id="miuToolImg" class="miuToolImg">
 		<div class="miu_popup_content">
-			<h1 class="heading miu_heading">{xen:phrase insert_image}</h1>
+			<h1 class="heading miu_heading">{xen:phrase miu_insert_image}</h1>
 			<div class="primaryContent">
 				<dl class="miu_tools_block">
-					<dt>{xen:phrase enter_image_url}</dt>
+					<dt>{xen:phrase miu_enter_image_url}</dt>
 					<dd><input class="miuLinkImg textCtrl miuFocus" type="text" name="miulinkimg" size="35"></dd>
 				</dl>
 			</div>
