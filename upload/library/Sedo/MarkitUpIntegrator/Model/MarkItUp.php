@@ -134,4 +134,3 @@ class Sedo_MarkitUpIntegrator_Model_MarkItUp extends XenForo_Model
 		return $document;
 	}
 }
-?>

@@ -75,4 +75,3 @@ class Sedo_MarkitUpIntegrator_Model_MarkItUpConfig extends XenForo_Model
 		XenForo_Model::create('XenForo_Model_DataRegistry')->delete('sedo_miu_config');	
 	}
 }
-?>

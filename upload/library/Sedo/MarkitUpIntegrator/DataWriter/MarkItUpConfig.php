@@ -45,5 +45,3 @@ class Sedo_MarkitUpIntegrator_DataWriter_MarkItUpConfig extends XenForo_DataWrit
 		return $this->getModelFromCache ( 'Sedo_MarkitUpIntegrator_Model_MarkItUpConfig' );
 	}
 }
-    
-?>

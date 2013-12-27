@@ -14,5 +14,3 @@ class Sedo_MarkitUpIntegrator_Route_PrefixAdmin_MarkItUp implements XenForo_Rout
 		return XenForo_Link::buildBasicLinkWithStringParam($outputPrefix, $action, $extension, $data, 'miu_button_id');
 	}
 }
-
-?>

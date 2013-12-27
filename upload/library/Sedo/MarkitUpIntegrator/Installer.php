@@ -57,5 +57,3 @@ class Sedo_MarkitUpIntegrator_Installer
 		XenForo_Model::create('XenForo_Model_DataRegistry')->delete('sedo_miu_config');		
 	}
 }
-?>
-

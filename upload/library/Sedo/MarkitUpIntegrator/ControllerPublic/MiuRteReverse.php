@@ -22,5 +22,3 @@ class Sedo_MarkitUpIntegrator_ControllerPublic_MiuRteReverse extends XFCP_Sedo_M
 		return parent::actionPreferencesSave();
 	}
 }
-?>
-
