@@ -16,7 +16,7 @@ class Sedo_MarkitUpIntegrator_Tms_Mods
 		$search[] = '#<textarea name="{\$formCtrlNameHtml}".*?</textarea>#si';
 		$replace[] =	'<xen:if is="{$visitor.miu_rte_reverse}">
 					<textarea name="{$formCtrlNameHtml}" id="{$editorId}_html" class="textCtrl MessageEditor MiuRevert" style="display:none; {xen:if $height, \'height: {$height};\'}">{$messageHtml}</textarea>	
-					<textarea id="{$editorId}_miu" rows="15" class="textCtrl MessageEditor MiuRevert MiuTarget" name="message" style="overflow: hidden;">{$message}</textarea>
+					<textarea id="{$editorId}_miu" rows="5" class="textCtrl MessageEditor MiuRevert MiuTarget" name="message" style="overflow: hidden;">{$message}</textarea>
 				<xen:else />
 					$0
 				</xen:if>';
