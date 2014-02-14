@@ -54,7 +54,7 @@ class Sedo_MarkitUpIntegrator_Listener_Templates
 				$IsRtl = $template->getParam('pageIsRtl');
 				$textDirection = ($IsRtl === true) ? 'rtl' : 'ltr';
 				
-				$globalMiuConfigs = XenForo_Model::create('XenForo_Model_DataRegistry')->get('sedo_miu_config');
+				$globalMiuConfigs = Sedo_MarkitUpIntegrator_Helper_Miu::getMiuConfig();
 				
 				if(!empty($options->markitup_integration_debug_DisplayCacheData) && $visitor['user_group_id'] == 3)
 				{
@@ -187,7 +187,7 @@ class Sedo_MarkitUpIntegrator_Listener_Templates
       					{
       						$params['miuCss'] = self::minifyCSS($params['miuCss']);
       					}
-      
+
       				//BUTTON SET BUILDER
       					/*js minify*/
       					if(empty($options->markitup_integration_debug_disable_minify_js))
@@ -205,13 +205,23 @@ class Sedo_MarkitUpIntegrator_Listener_Templates
       							array('Sedo_MarkitUpIntegrator_Listener_Templates', 'activateXenOptions'),
       							$params['xenSet']
       						);
-      
-      					$compiler = new XenForo_Template_Compiler(html_entity_decode($params['xenSet']));
-      					$parsed = $compiler->lexAndParse();
-      					$compiled = $compiler->compileParsedPlainText($parsed, 'MarkitUpIntegrator', $style_id, $lang_id);
+					
+      					$compiler = new XenForo_Template_Compiler($params['xenSet']);
+      					$segments = $compiler->lexAndParse();
+      					$phrasesUsed =  $compiler->identifyPhrasesInParsedTemplate($segments);
+      					$translatedPhrases = array();
+
+					foreach($phrasesUsed as $phraseKey)
+					{
+						$translatedPhrases[$phraseKey] = new XenForo_Phrase($phraseKey); //require globally cached phrases
+					}
+
+      					$fakePhraseCache = array($lang_id => $translatedPhrases);
+      					$compiler->mergePhraseCache($fakePhraseCache);
+      					$compiled = $compiler->compileParsed($segments, 'MarkitUpIntegrator', $style_id, $lang_id);
+
       					eval($compiled);
-      			
-      					$params['xenSet'] = $__output;
+      					$params['xenSet'] = html_entity_decode($__output);
 
       				$mergedParams = array_merge($template->getParams(), $hookParams);
       				$mergedParams = array_merge($mergedParams, $params);

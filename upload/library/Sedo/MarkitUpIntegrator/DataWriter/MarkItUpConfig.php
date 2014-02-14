@@ -1,7 +1,8 @@
 <?php
 class Sedo_MarkitUpIntegrator_DataWriter_MarkItUpConfig extends XenForo_DataWriter
 {
-	protected function _getFields() {
+	protected function _getFields() 
+	{
 		return array(
 			'sedo_markitup_config' => array(
 				'config_id' 	=> array(
@@ -20,9 +21,7 @@ class Sedo_MarkitUpIntegrator_DataWriter_MarkItUpConfig extends XenForo_DataWrit
 						'type' => self::TYPE_STRING, 
 						'default' => ''
 				)
-				
 			)
-
 		);
 	}
 	

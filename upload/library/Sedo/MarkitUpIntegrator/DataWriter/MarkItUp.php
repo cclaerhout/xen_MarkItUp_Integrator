@@ -70,6 +70,4 @@ class Sedo_MarkitUpIntegrator_DataWriter_MarkItUp extends XenForo_DataWriter
 
 		return true;
 	}
-	
-	
 }

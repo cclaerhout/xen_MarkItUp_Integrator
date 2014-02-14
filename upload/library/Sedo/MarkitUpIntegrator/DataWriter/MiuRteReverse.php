@@ -4,10 +4,14 @@ class Sedo_MarkitUpIntegrator_DataWriter_MiuRteReverse extends XFCP_Sedo_MarkitU
 	protected function _getFields()
 	{
 		$parent = parent::_getFields();
-		$parent['xf_user_option']['miu_rte_reverse'] = array(
-				'type' => self::TYPE_BOOLEAN, 
-				'default' => 0
-		);
+		
+		if(isset($parent['xf_user_option']))
+		{
+			$parent['xf_user_option']['miu_rte_reverse'] = array(
+					'type' => self::TYPE_BOOLEAN, 
+					'default' => 0
+			);
+		}
 
 		return $parent;
 	}

@@ -6,11 +6,11 @@ class Sedo_MarkitUpIntegrator_Model_MarkItUp extends XenForo_Model
 	*/
 	public function getMarkItUpButtonsById($id)
 	{
-	return $this->_getDb()->fetchRow('
-			SELECT *
-			FROM sedo_markitup
-			WHERE miu_button_id = ?
-		', $id);
+		return $this->_getDb()->fetchRow('
+				SELECT *
+				FROM sedo_markitup
+				WHERE miu_button_id = ?
+			', $id);
 	}
 
 	/**
@@ -30,11 +30,11 @@ class Sedo_MarkitUpIntegrator_Model_MarkItUp extends XenForo_Model
 	*/
 	public function getAlltMarkItUpButtons()
 	{
-	return $this->fetchAllKeyed('
-        		SELECT * 
-        		FROM sedo_markitup
-        		ORDER BY button_code
-        	', 'miu_button_id');
+		return $this->fetchAllKeyed('
+	        		SELECT * 
+	        		FROM sedo_markitup
+	        		ORDER BY button_code
+	        	', 'miu_button_id');
 	}
   
     

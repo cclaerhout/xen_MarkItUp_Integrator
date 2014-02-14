@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <miu_allbuttons>
   <miu_button>
-    <miu_button_id>5</miu_button_id>
+    <miu_button_id>1</miu_button_id>
     <button_code>Bold</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_bold}, single}', key:'B', openWith:'[b]', closeWith:'[/b]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -26px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>1</miu_button_id>
+    <miu_button_id>2</miu_button_id>
     <button_code>Center</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_center_align}, single}', openWith:'[center]', closeWith:'[/center]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -151px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>6</miu_button_id>
+    <miu_button_id>3</miu_button_id>
     <button_code>Clean</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_clean}, single}', className:"clean", replaceWith:function(h) { return h.selection.replace(/\[(.*?)\]/g, "") } },</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
@@ -33,12 +33,12 @@
 .markItUpParent  .markItUpButton{$id} {
 	min-width:40px !important;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>7</miu_button_id>
+    <miu_button_id>4</miu_button_id>
     <button_code>Code</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_code_main}, single}',  dropMenu :[
 	{name:'{xen:jsescape {xen:phrase miu_button_code}, single}', insertBeforeName: '&lt;span class="leftImg"&gt;&lt;/span&gt;', openWith:'[code]', closeWith:'[/code]' },
@@ -82,7 +82,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>8</miu_button_id>
+    <miu_button_id>5</miu_button_id>
     <button_code>Colors</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_colors}, single}', dropMenu: [
 	{name:'000000', openWith:'[color=#000000]', closeWith:'[/color]', className:"col1-1" },
@@ -293,9 +293,9 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>9</miu_button_id>
+    <miu_button_id>6</miu_button_id>
     <button_code>Fonts</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase font_family}, single}', key:'F', dropMenu :[
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_font_family}, single}', key:'F', dropMenu :[
 	{name:'Andale Mono', openWith:'[font=andale mono]', closeWith:'[/font]' },
 	{name:'Arial', openWith:'[font=arial]', closeWith:'[/font]' },
 	{name:'Arial black', openWith:'[font=arial black]', closeWith:'[/font]' },
@@ -374,7 +374,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>23</miu_button_id>
+    <miu_button_id>7</miu_button_id>
     <button_code>Global_BiUs</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_global_bius}, single}',  dropMenu :[
 	{name:'{xen:jsescape {xen:phrase miu_button_bold}, single}', openWith:'[b]', closeWith:'[/b]' },
@@ -419,7 +419,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>24</miu_button_id>
+    <miu_button_id>8</miu_button_id>
     <button_code>Global_LcRj</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_Global_LcRj}, single}',  dropMenu :[
 	{name:'{xen:jsescape {xen:phrase miu_button_left_align}, single}', openWith:'[left]', closeWith:'[/left]' },
@@ -458,7 +458,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>25</miu_button_id>
+    <miu_button_id>9</miu_button_id>
     <button_code>Global_LIO</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_global_lio}, single}',  dropMenu :[
 	{name:'{xen:jsescape {xen:phrase miu_button_bulleted_list}, single}', openWith:'[list]\n', closeWith:'\n[/list]'},
@@ -509,7 +509,7 @@
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -227px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
@@ -520,23 +520,23 @@
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -52px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>2</miu_button_id>
+    <miu_button_id>12</miu_button_id>
     <button_code>Justify</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_fulljustify_align}, single}', openWith:'[justif]', closeWith:'[/justif]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -201px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>29</miu_button_id>
+    <miu_button_id>13</miu_button_id>
     <button_code>KeyTouch</button_code>
     <button_cmd>{name:'Çœ€', dropMenu :[
 	{name:'Ç', openWith:'Ç'},
@@ -608,117 +608,117 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>3</miu_button_id>
+    <miu_button_id>14</miu_button_id>
     <button_code>Left</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_left_align}, single}', openWith:'[left]', closeWith:'[/left]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -126px 0;
 }</button_maincss>
-    <button_extracss/>
-    <button_has_usr>0</button_has_usr>
-    <button_usr>a:0:{}</button_usr>
-  </miu_button>
-  <miu_button>
-    <miu_button_id>12</miu_button_id>
-    <button_code>Link</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_link}, single}', key:'L', beforeInsert: function(miu) {XenForo.miuExtra.linkManager(miu);}, className:"miuLink" },</button_cmd>
-    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -425px 0;
-}</button_maincss>
-    <button_extracss/>
-    <button_has_usr>0</button_has_usr>
-    <button_usr>a:0:{}</button_usr>
-  </miu_button>
-  <miu_button>
-    <miu_button_id>13</miu_button_id>
-    <button_code>Listbullet</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_bulleted_list}, single}', openWith:'[list]\n', closeWith:'\n[/list]'},</button_cmd>
-    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -326px 0;
-}</button_maincss>
-    <button_extracss/>
-    <button_has_usr>0</button_has_usr>
-    <button_usr>a:0:{}</button_usr>
-  </miu_button>
-  <miu_button>
-    <miu_button_id>14</miu_button_id>
-    <button_code>Listitem</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_list_item}, single}', openWith:'[*] '},</button_cmd>
-    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -350px 0;
-}</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
     <miu_button_id>15</miu_button_id>
-    <button_code>Listnumeric</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_numeric_list}, single}', openWith:'[list=1]\n', closeWith:'\n[/list]'},</button_cmd>
+    <button_code>Link</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_link}, single}', key:'L', beforeInsert: function(miu) {XenForo.miuExtra.linkManager(miu);}, className:"miuLink" },</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -302px 0;
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -425px 0;
 }</button_maincss>
-    <button_extracss/>
-    <button_has_usr>0</button_has_usr>
-    <button_usr>a:0:{}</button_usr>
-  </miu_button>
-  <miu_button>
-    <miu_button_id>28</miu_button_id>
-    <button_code>Media</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_media}, single}', beforeInsert: function(miu) {XenForo.miuExtra.mediaManager(miu);}, className:"miuMedia" },</button_cmd>
-    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -651px 0;
-}</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
     <miu_button_id>16</miu_button_id>
-    <button_code>Outdent</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_outdent}, single}', replaceWith:function(miu) { return XenForo.miuExtra.outdent(miu);}, className:"miuOutdent" },</button_cmd>
+    <button_code>Listbullet</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_bulleted_list}, single}', openWith:'[list]\n', closeWith:'\n[/list]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -251px 0;
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -326px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
     <miu_button_id>17</miu_button_id>
-    <button_code>Picture</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_picture}, single}', key:'P', beforeInsert: function(miu) {XenForo.miuExtra.imgManager(miu);}, className:"miuImg" },</button_cmd>
+    <button_code>Listitem</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_list_item}, single}', openWith:'[*] '},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -401px 0;
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -350px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
     <miu_button_id>18</miu_button_id>
-    <button_code>Quotes</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_quotes}, single}', openWith:'[quote]', closeWith:'[/quote]'},</button_cmd>
+    <button_code>Listnumeric</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_numeric_list}, single}', openWith:'[list=1]\n', closeWith:'\n[/list]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -476px 0;
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -302px 0;
 }</button_maincss>
-    <button_extracss/>
-    <button_has_usr>0</button_has_usr>
-    <button_usr>a:0:{}</button_usr>
-  </miu_button>
-  <miu_button>
-    <miu_button_id>4</miu_button_id>
-    <button_code>Right</button_code>
-    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_right_align}, single}', openWith:'[right]', closeWith:'[/right]'},</button_cmd>
-    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
-	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -176px 0;
-}</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
     <miu_button_id>19</miu_button_id>
+    <button_code>Media</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_media}, single}', beforeInsert: function(miu) {XenForo.miuExtra.mediaManager(miu);}, className:"miuMedia" },</button_cmd>
+    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -651px 0;
+}</button_maincss>
+    <button_extracss></button_extracss>
+    <button_has_usr>0</button_has_usr>
+    <button_usr>a:0:{}</button_usr>
+  </miu_button>
+  <miu_button>
+    <miu_button_id>20</miu_button_id>
+    <button_code>Outdent</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_outdent}, single}', replaceWith:function(miu) { return XenForo.miuExtra.outdent(miu);}, className:"miuOutdent" },</button_cmd>
+    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -251px 0;
+}</button_maincss>
+    <button_extracss></button_extracss>
+    <button_has_usr>0</button_has_usr>
+    <button_usr>a:0:{}</button_usr>
+  </miu_button>
+  <miu_button>
+    <miu_button_id>21</miu_button_id>
+    <button_code>Picture</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_picture}, single}', key:'P', beforeInsert: function(miu) {XenForo.miuExtra.imgManager(miu);}, className:"miuImg" },</button_cmd>
+    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -401px 0;
+}</button_maincss>
+    <button_extracss></button_extracss>
+    <button_has_usr>0</button_has_usr>
+    <button_usr>a:0:{}</button_usr>
+  </miu_button>
+  <miu_button>
+    <miu_button_id>22</miu_button_id>
+    <button_code>Quotes</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_quotes}, single}', openWith:'[quote]', closeWith:'[/quote]'},</button_cmd>
+    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -476px 0;
+}</button_maincss>
+    <button_extracss></button_extracss>
+    <button_has_usr>0</button_has_usr>
+    <button_usr>a:0:{}</button_usr>
+  </miu_button>
+  <miu_button>
+    <miu_button_id>23</miu_button_id>
+    <button_code>Right</button_code>
+    <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_right_align}, single}', openWith:'[right]', closeWith:'[/right]'},</button_cmd>
+    <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
+	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -176px 0;
+}</button_maincss>
+    <button_extracss></button_extracss>
+    <button_has_usr>0</button_has_usr>
+    <button_usr>a:0:{}</button_usr>
+  </miu_button>
+  <miu_button>
+    <miu_button_id>24</miu_button_id>
     <button_code>Size</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_font_size}, single}', key:'S', dropMenu :[
 	{name:'1', openWith:'[size=1]', closeWith:'[/size]' },
@@ -789,7 +789,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>22</miu_button_id>
+    <miu_button_id>25</miu_button_id>
     <button_code>Smilies</button_code>
     <button_cmd>Created with php</button_cmd>
     <button_maincss>.markItUpParent &gt; .markItUpButton{$id} &gt; a{ 
@@ -817,7 +817,7 @@
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>20</miu_button_id>
+    <miu_button_id>26</miu_button_id>
     <button_code>Strike</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_strike}, single}', openWith:'[s]', closeWith:'[/s]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{ 
@@ -827,18 +827,18 @@
 .markItUpParent  .markItUpButton{$id} {
 	min-width:40px !important;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
   <miu_button>
-    <miu_button_id>21</miu_button_id>
+    <miu_button_id>27</miu_button_id>
     <button_code>Underline</button_code>
     <button_cmd>{name:'{xen:jsescape {xen:phrase miu_button_underline}, single}', key:'U', openWith:'[u]', closeWith:'[/u]'},</button_cmd>
     <button_maincss>.markItUpParent .markItUpButton{$id} a{  
 	background:url('@stylesPath/sedo/markitup/buttons/{phrase:miu_icon_default}.png') no-repeat -75px 0;
 }</button_maincss>
-    <button_extracss/>
+    <button_extracss></button_extracss>
     <button_has_usr>0</button_has_usr>
     <button_usr>a:0:{}</button_usr>
   </miu_button>
