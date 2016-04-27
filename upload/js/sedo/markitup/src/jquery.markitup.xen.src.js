@@ -196,8 +196,8 @@
 						for (j = levels.length -1; j >= 0; j--) {
 							t += levels[j]+"-";
 						}
-						if(button.img){ button.img = '<img src="'+button.img+'" alt="'+button.name+'">';}
-						li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"><a href="" '+key+' title="'+title+'">'+(button.insertBeforeName||'')+(button.img||button.name||'')+(button.insertAfterName||'')+'</a></li>')
+						if(button.img){ button.imgSrc = '<img src="'+button.img+'" alt="'+button.name+'">';}
+						li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"><a href="" '+key+' title="'+title+'">'+(button.insertBeforeName||'')+(button.imgSrc||button.name||'')+(button.insertAfterName||'')+'</a></li>')
 						.bind("contextmenu.markItUp", function() { // prevent contextmenu on mac and allow ctrl+click
 							return false;
 						}).bind("focusin.markItUp", function(){
