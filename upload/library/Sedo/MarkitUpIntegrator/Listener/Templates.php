@@ -275,7 +275,7 @@ class Sedo_MarkitUpIntegrator_Listener_Templates
 		$cmd = "{name:'{xen:jsescape {xen:phrase miu_button_smilies}, single}', className: 'miu_smilies', dropMenu: [\n";
 		$css = '';
 		$i=1;
-		
+
 		foreach ($smilies as $smilie)
 		{
 			$limit =  filter_var(XenForo_Template_Helper_Core::styleProperty('miu_public_smilies_number'), FILTER_SANITIZE_NUMBER_INT);
@@ -296,6 +296,14 @@ class Sedo_MarkitUpIntegrator_Listener_Templates
 			}
 			else
 			{
+				/*
+				if(strpos($url, 'http://') === false)
+				{
+					$boardUrl = XenForo_Application::get('options')->get('boardUrl');
+					$url = (strpos($url, '/') === 0) ? $boardUrl.$url : $boardUrl.'/'.$url;
+				}
+				*/
+
 				$cmd .= "{name:'$title', openWith:'$code', className:\"noSprite s_$smilieid\", img:'$url' },\n";
 			}
 
