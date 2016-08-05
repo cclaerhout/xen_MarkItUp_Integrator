@@ -208,7 +208,8 @@ class Sedo_MarkitUpIntegrator_ControllerAdmin_MarkItUp extends XenForo_Controlle
 			throw new XenForo_Exception(new XenForo_Phrase('please_enter_valid_file_name_requested_file_not_read'), true);
 		}
 		
-		$file = new SimpleXMLElement($fileName, null, true);
+		$file = Sedo_MarkitUpIntegrator_Helper_Miu::scanXmlFile($fileName);
+		//$file = new SimpleXMLElement($fileName, null, true);
 		
 		if($file->getName() == 'miu_button')
 		{
@@ -344,8 +345,9 @@ class Sedo_MarkitUpIntegrator_ControllerAdmin_MarkItUp extends XenForo_Controlle
 		{
 			throw new XenForo_Exception(new XenForo_Phrase('please_enter_valid_file_name_requested_file_not_read'), true);
 		}
-		
-		$file = new SimpleXMLElement($fileName, null, true);
+
+		$file = Sedo_MarkitUpIntegrator_Helper_Miu::scanXmlFile($fileName);
+		//$file = new SimpleXMLElement($fileName, null, true);
 		
 		if($file->getName() == 'miu_allbuttons')
 		{

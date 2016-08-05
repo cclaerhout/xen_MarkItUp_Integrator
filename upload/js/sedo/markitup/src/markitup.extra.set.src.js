@@ -3,14 +3,85 @@
 (function($) {
 	XenForo.miuExtra = {
 		colorPicker: function(markItUp, jsRoot) {
-			try {
-				$.farbtastic('#miuSelectColor').linkTo('#miuGetColor');
+			$editor = $(markItUp.textarea).parents('.markItUpContainer');
+
+			function getPhrase(key){
+				console.log(XenForo.phrases);
+				if(typeof XenForo.phrases.sedoMiu == 'undefined' || typeof XenForo.phrases.sedoMiu[key] == 'undefined') return '';
+				return XenForo.phrases.sedoMiu[key];
 			}
-			catch(e) {
-				this.colorPicker_init(markItUp, jsRoot);
+
+			function getColorPickerHtml(){
+				var color = getPhrase('color'),
+					ok = getPhrase('ok');
+
+				return 	'<div id="miuAdvColorPicker" class="miuTools">'+
+				'<div id="miuSelectColor"></div>'+
+				'<ul>'+
+					'<li>'+color+' <input type="text" id="miuGetColor" name="miugetcolor" value="#123456" /></li>'+
+					'<li><div id="miuSendColor" class="button">'+ok+'</div></li>'+
+				'</ul></div>';
+			}
+
+			function init(){
+				$.getScript(jsRoot + "/sedo/markitup/farbtastic.js")
+					.done(function(script, textStatus) {
+						//Bind this cmd: Close Color Picker if click outside
+						$('html').bind('click', function() {
+							$('#miuAdvColorPicker').hide();
+		      				});
+		
+				      		$('#miuAdvColorPicker').bind('click', function(e){
+		      					e.stopPropagation();
+		      				});
+						
+						//Activate color picker
+						$.farbtastic('#miuSelectColor').linkTo('#miuGetColor');
+						
+						//Send colors to the editor
+						$('#miuSendColor').bind('click', function() {
+							var color = $('#miuGetColor').val();
+							$('#miuAdvColorPicker').hide();
+	
+							$.markItUp({ 
+					      			openWith: '[color='+color+']', 
+					      			closeWith: '[/color]',
+								caretPositionIE: markItUp.caretPosition,
+								selectionIE: markItUp.selection			      			
+					      		});
+	
+							//Move tool to avoid to be deleted when TinyMCE is loading
+							$form = $(this).closest('form');
+							$('#miuAdvColorPicker').prependTo($form);
+	
+							return false;
+						}); 				
+					})
+					.fail(function(jqxhr, settings, exception) {
+			  			console.info('Error: Farbtastic was NOT Loaded');
+			  			var phrase = getPhrase('fail');
+		
+				      		$.markItUp({ 
+				      				openWith:"[color=#[!["+phrase+"]!]]",
+				      				closeWith:"[/color]",
+								caretPositionIE: markItUp.caretPosition,
+								selectionIE: markItUp.selection	 
+				      		} );
+				      		
+				      		return false;
+					});			
+			}
+
+			if(!$('#miuAdvColorPicker').length){
+				var colorPickerHtml = getColorPickerHtml();
+
+				$form = $editor.closest('form');
+				$(colorPickerHtml).prependTo($form);
+				init();
+			}else{
+				$.farbtastic('#miuSelectColor').linkTo('#miuGetColor');			
 			}
 	
-			$editor = $(markItUp.textarea).parents('.markItUpContainer');
 			$editor.find('.customColors').parent().addClass('miuBasicColorPicker').parent().addClass('miuColorButton');
 			
 			//Dynamic display
@@ -21,54 +92,6 @@
 			$('.markItUpLine').css({ position: 'relative'});//toggle line position to relative (zindex is needed on lines because of IE7)
 	
 			return false;
-		},
-		colorPicker_init: function(markItUp, jsRoot) {
-			$.getScript(jsRoot + "/sedo/markitup/farbtastic.js")
-				.done(function(script, textStatus) {
-					//Bind this cmd: Close Color Picker if click outside
-					$('html').bind('click', function() {
-						$('#miuAdvColorPicker').hide();
-	      				});
-	
-			      		$('#miuAdvColorPicker').bind('click', function(e){
-	      					e.stopPropagation();
-	      				});
-					
-					//Activate color picker
-					$.farbtastic('#miuSelectColor').linkTo('#miuGetColor');
-					
-					//Send colors to the editor
-					$('#miuSendColor').bind('click', function() {
-						var color = $('#miuGetColor').val();
-						$('#miuAdvColorPicker').hide();
-
-						$.markItUp({ 
-				      			openWith: '[color='+color+']', 
-				      			closeWith: '[/color]',
-							caretPositionIE: markItUp.caretPosition,
-							selectionIE: markItUp.selection			      			
-				      		});
-
-						//Move tool to avoid to be deleted when TinyMCE is loading
-						$form = $(this).closest('form');
-						$(this).closest('#miuAdvColorPicker').prependTo($form);
-					
-						return false;
-					}); 				
-				})
-				.fail(function(jqxhr, settings, exception) {
-		  			console.info('Error: Farbtastic was NOT Loaded');
-		  			var phrase = $('#miuAdvColorPicker').attr('data-fail');
-	
-			      		$.markItUp({ 
-			      				openWith:"[color=#[!["+phrase+"]!]]",
-			      				closeWith:"[/color]",
-							caretPositionIE: markItUp.caretPosition,
-							selectionIE: markItUp.selection	 
-			      		} );
-			      		
-			      		return false;
-				}); 
 		},
 		linkManager: function(miu, jsRoot)
 		{
@@ -231,3 +254,4 @@
 		}
 	};
 })(jQuery);
+

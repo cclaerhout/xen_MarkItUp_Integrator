@@ -15,4 +15,51 @@ class Sedo_MarkitUpIntegrator_Helper_Miu
 		
 		return 	$miu_config;
 	}
+
+	public static function callbackChecker($class, $method)
+	{
+		if(!empty($method))
+		{
+			return (class_exists($class) && method_exists($class, $method));
+		}
+		
+		return class_exists($class);
+	}
+
+	public static function scanXmlFile($xmlFile)
+	{
+		if(self::callbackChecker('XenForo_Helper_DevelopmentXml', 'scanFile'))
+		{
+			//Protected method
+			$file = XenForo_Helper_DevelopmentXml::scanFile($xmlFile);
+		}
+		else
+		{
+			//Classic PHP method
+			$file = new SimpleXMLElement($xmlFile, null, true);
+		}
+		
+		return $file;
+	}
+
+	public static function scanXmlString($xmlString)
+	{
+		if(self::callbackChecker('Zend_Xml_Security', 'scan'))
+		{
+			//Protected method
+			$xmlObj = Zend_Xml_Security::scan($xmlString);
+
+			if (!$xmlObj)
+			{
+				throw new XenForo_Exception("Invalid XML in $xmlObj");
+			}
+		}
+		else
+		{
+			//Classic PHP method
+			$xmlObj = simplexml_load_string($xmlString);
+		}
+		
+		return $xmlObj;
+	}
 }
